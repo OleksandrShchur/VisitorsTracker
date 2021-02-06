@@ -1,0 +1,15 @@
+E:\University\3 курс\Курсова\VisitorsTracker\VisitorsTracker.Core\obj\Debug\netcoreapp3.1\VisitorsTracker.Core.csprojAssemblyReference.cache
+E:\University\3 курс\Курсова\VisitorsTracker\VisitorsTracker.Core\obj\Debug\netcoreapp3.1\VisitorsTracker.Core.AssemblyInfoInputs.cache
+E:\University\3 курс\Курсова\VisitorsTracker\VisitorsTracker.Core\obj\Debug\netcoreapp3.1\VisitorsTracker.Core.AssemblyInfo.cs
+E:\University\3 курс\Курсова\VisitorsTracker\VisitorsTracker.Core\obj\Debug\netcoreapp3.1\VisitorsTracker.Core.csproj.CoreCompileInputs.cache
+E:\University\3 курс\Курсова\VisitorsTracker\VisitorsTracker.Core\bin\Debug\netcoreapp3.1\VisitorsTracker.Core.deps.json
+E:\University\3 курс\Курсова\VisitorsTracker\VisitorsTracker.Core\bin\Debug\netcoreapp3.1\VisitorsTracker.Core.runtimeconfig.json
+E:\University\3 курс\Курсова\VisitorsTracker\VisitorsTracker.Core\bin\Debug\netcoreapp3.1\VisitorsTracker.Core.runtimeconfig.dev.json
+E:\University\3 курс\Курсова\VisitorsTracker\VisitorsTracker.Core\bin\Debug\netcoreapp3.1\VisitorsTracker.Core.dll
+E:\University\3 курс\Курсова\VisitorsTracker\VisitorsTracker.Core\bin\Debug\netcoreapp3.1\VisitorsTracker.Core.pdb
+E:\University\3 курс\Курсова\VisitorsTracker\VisitorsTracker.Core\bin\Debug\netcoreapp3.1\VisitorsTracker.Db.dll
+E:\University\3 курс\Курсова\VisitorsTracker\VisitorsTracker.Core\bin\Debug\netcoreapp3.1\VisitorsTracker.Db.pdb
+E:\University\3 курс\Курсова\VisitorsTracker\VisitorsTracker.Core\obj\Debug\netcoreapp3.1\VisitorsTracker.Core.csproj.CopyComplete
+E:\University\3 курс\Курсова\VisitorsTracker\VisitorsTracker.Core\obj\Debug\netcoreapp3.1\VisitorsTracker.Core.dll
+E:\University\3 курс\Курсова\VisitorsTracker\VisitorsTracker.Core\obj\Debug\netcoreapp3.1\VisitorsTracker.Core.pdb
+E:\University\3 курс\Курсова\VisitorsTracker\VisitorsTracker.Core\obj\Debug\netcoreapp3.1\VisitorsTracker.Core.genruntimeconfig.cache
