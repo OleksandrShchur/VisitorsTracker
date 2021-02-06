@@ -1,15 +1,12 @@
 ﻿using System;
-using VisitorsTracker.Db.Enums;
 
-namespace VisitorsTracker.Core.DTOs
+namespace VisitorsTracker.ViewModels
 {
-    public class UserDTO
+    public class UserInfoViewModel
     {
         public Guid Id { get; set; }
 
         public string Name { get; set; }
-
-        public string PasswordHash { get; set; }
 
         public string Email { get; set; }
 
@@ -17,9 +14,9 @@ namespace VisitorsTracker.Core.DTOs
 
         public DateTime Birthday { get; set; }
 
-        public Gender Gender { get; set; }
+        public byte Gender { get; set; }
 
-        public virtual Guid RoleId { get; set; }
+        public string Role { get; set; }
 
         public string PhotoUrl { get; set; }
     }

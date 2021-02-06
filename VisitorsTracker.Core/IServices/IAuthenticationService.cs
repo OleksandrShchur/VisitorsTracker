@@ -10,7 +10,7 @@ namespace VisitorsTracker.Core.IServices
 {
     public interface IAuthenticationService
     {
-        Task Authenticate(string email, string password);
+        Task Authenticate(string email);
 
         Task FirstAuthenticate(UserDTO userDto);
 

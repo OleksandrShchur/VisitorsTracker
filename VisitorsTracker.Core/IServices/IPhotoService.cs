@@ -1,17 +1,15 @@
 ﻿using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
+using VisitorsTracker.Db.Entities;
 
 namespace VisitorsTracker.Core.IServices
 {
     public interface IPhotoService
     {
-        Task<string> AddPhoto(IFormFile uploadedFile);
+        Task<string> AddPhoto(IFormFile uploadedFile, User user);
 
-        Task<string> AddPhotoByURL(string url);
+        Task<string> AddPhotoByURL(string url, User user);
 
-        Task Delete(Guid id);
+        Task Delete(User id);
     }
 }

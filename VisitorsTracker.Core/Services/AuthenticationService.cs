@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Security.Claims;
 using System.Threading.Tasks;
 using VisitorsTracker.Core.DTOs;
 using VisitorsTracker.Core.Exceptions;
@@ -16,6 +14,18 @@ namespace VisitorsTracker.Core.Services
             IUserService userServ)
         {
             _userService = userServ;
+        }
+
+        public async Task Authenticate(string email)
+        {
+            var user = _userService.GetByEmail(email);
+            if (user == null)
+            {
+                throw new VisitorsTrackerException("User not found");
+            }
+
+            // save
+            await _userService.Update(user);
         }
 
         public async Task FirstAuthenticate(UserDTO userDto)
