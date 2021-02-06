@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
+using AutoMapper;
+using Google.Apis.Auth;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using VisitorsTracker.Core.DTOs;
+using VisitorsTracker.Core.IServices;
 using VisitorsTracker.ViewModels;
 
 namespace VisitorsTracker.Controllers
@@ -16,33 +16,68 @@ namespace VisitorsTracker.Controllers
     [ApiController]
     public class AuthenticationController : ControllerBase
     {
-        public AuthenticationController()
-        {
+        private readonly IUserService _userService;
+        private readonly IAuthenticationService _authService;
+        private readonly IMapper _mapper;
+        private readonly IPhotoService _photoService;
 
+        public AuthenticationController(
+            IUserService userSrv,
+            IMapper mapper,
+            IAuthenticationService authSrv,
+            IPhotoService photoService)
+        {
+            _userService = userSrv;
+            _mapper = mapper;
+            _authService = authSrv;
+            _photoService = photoService;
         }
 
         /// <summary>
-        /// This method allows to log in to the API and generate an authentication token.
+        /// This method is to login with google account.
         /// </summary>
-        /// <param name="authRequest">Required.</param>
+        /// <param name="userView">Requireed.</param>
         /// <returns>UserInfo model.</returns>
-        /// <response code="200">Return UserInfo model.</response>
+        /// /// <response code="200">Return UserInfo model.</response>
         /// <response code="400">If login process failed.</response>
         [AllowAnonymous]
         [HttpPost("[action]")]
-        [Produces("application/json")]
-        public async Task<IActionResult> Login(LoginViewModel authRequest)
+        public async Task<IActionResult> GoogleLogin([FromBody] UserViewModel userView)
         {
-            if (!ModelState.IsValid)
+            var payload = await GoogleJsonWebSignature.ValidateAsync(new JsonWebToken().ToString(),
+                new GoogleJsonWebSignature.ValidationSettings());
+            UserDTO userExisting = _userService.GetByEmail(payload.Email);
+
+            if (userExisting == null && !string.IsNullOrEmpty(payload.Email) && payload.Email.Contains("@chnu.edu.ua"))
             {
-                return BadRequest(ModelState);
+                var user = _mapper.Map<UserViewModel, UserDTO>(userView);
+                user.Email = payload.Email;
+                user.Name = payload.Name;
+                //user.Photo = await _photoService.AddPhotoByURL(userView.PhotoUrl);
+                await _userService.Create(user);
             }
 
-            var authResponseModel = await _authService.Authenticate(authRequest.Email, authRequest.Password);
-            var user = _userService.GetByEmail(authRequest.Email);
-            var userInfo = _mapper.Map<UserInfoViewModel>(user);
+            await SetPhoto(userExisting, userView.PhotoUrl);
+            var userInfo = _mapper.Map<UserInfoViewModel>(_userService.GetByEmail(payload.Email));
 
             return Ok(userInfo);
+        }
+
+        private async Task<bool> SetPhoto(UserDTO userExisting, string urlPhoto)
+        {
+            if (userExisting != null)
+            {
+                if (userExisting.PhotoUrl == null)
+                {
+                    //userExisting.PhotoUrl = await _photoService.AddPhotoByURL(urlPhoto);
+                    //userExisting.PhotoId = userExisting.Photo.Id;
+                    await _userService.Update(userExisting);
+
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }

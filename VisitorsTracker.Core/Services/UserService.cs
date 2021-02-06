@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -89,13 +90,13 @@ namespace VisitorsTracker.Core.Services
 
             if (user.Photo != null)
             {
-                await _photoService.Delete(user.Photo);
+                await _photoService.Delete(user);
             }
 
             try
             {
-                user.Photo = await _photoService.AddPhoto(avatar);
-                Update(user);
+                user.Photo = await _photoService.AddPhoto(avatar, user);
+                Update(user); // delete, if Update have already done in Photo service
                 await _context.SaveChangesAsync();
             }
             catch (ArgumentException)
@@ -131,13 +132,13 @@ namespace VisitorsTracker.Core.Services
         {
             var user = _mapper.Map<UserDTO, ProfileDTO>(GetById(id));
 
-            var rel = _context.Relationships
+            /*var rel = _context.Relationships
                 .FirstOrDefault(x => x.UserFromId == fromId && x.UserToId == id);
             user.Attitude = (rel != null)
                 ? (byte)rel.Attitude
                 : (byte)Attitude.None;
 
-            user.Rating = GetRating(user.Id);
+            user.Rating = GetRating(user.Id);*/
 
             return user;
         }
