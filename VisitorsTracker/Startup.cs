@@ -93,7 +93,7 @@ namespace VisitorsTracker
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.XML";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
 
-                c.IncludeXmlComments(xmlPath);
+                //c.IncludeXmlComments(xmlPath);
                 //c.AddFluentValidationRules();
             });
 
