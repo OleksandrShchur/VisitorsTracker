@@ -1,10 +1,6 @@
 import React, { Component } from 'react';
 import { GoogleLogin } from 'react-google-login';
-import { connect } from 'react-redux';
-import { loginGoogle } from '../actions/login';
 import config from '../config';
-import { withRouter } from 'react-router-dom';
-import './css/Auth.css';
 
 class LoginGoogle extends Component {
     render() {
@@ -38,16 +34,4 @@ class LoginGoogle extends Component {
     }
 };
 
-const mapStateToProps = (state) => {
-    return {
-        login: state.login
-    }
-};
-
-const mapDispatchToProps = (dispatch) => {
-    return {
-        loginGoogle: (tokenId, email, name, imageUrl) => dispatch(loginGoogle(tokenId, email, name, imageUrl))
-    }
-};
-
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(LoginGoogle));
+export default LoginGoogle;

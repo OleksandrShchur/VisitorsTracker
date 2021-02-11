@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux'
 import _authenticate from '../../actions/authentication';
 
 class Authentication extends Component {
@@ -19,15 +18,4 @@ class Authentication extends Component {
     }
 }
 
-const mapStateToProps = state => (state.user);
-
-const mapDispatchToProps = dispatch => {
-    return {
-        auth: (data) => dispatch(_authenticate(data))
-    };
-};
-
-export default connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(Authentication);
+export default Authentication;

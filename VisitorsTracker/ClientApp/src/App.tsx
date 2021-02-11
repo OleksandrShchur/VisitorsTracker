@@ -1,10 +1,10 @@
 import * as React from 'react';
-import { Route } from 'react-router';
+import Login from './components/Login/index';
 
 import './custom.css'
 
 export default () => (
     <div>
-        Hello world!
+        <Login />
     </ div>
 );
