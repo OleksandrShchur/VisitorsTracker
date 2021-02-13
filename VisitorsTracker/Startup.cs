@@ -15,6 +15,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using VisitorsTracker.Core.Infrastructure;
+using VisitorsTracker.Core.IServices;
+using VisitorsTracker.Core.Services;
 using VisitorsTracker.Db.EFCore;
 
 namespace VisitorsTracker
@@ -31,9 +34,20 @@ namespace VisitorsTracker
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var signingKey = new SigningSymmetricKey(Configuration.GetValue<string>("JWTOptions:SecretKey"));
+
+            services.AddSingleton<IJwtSigningEncodingKey>(signingKey);
+            services.AddTransient<ITokenService, TokenService>();
+
             string connection = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlServer(connection));
+
+            #region Configure our services...
+            services.AddScoped<IAuthenticationService, AuthenticationService>();
+            services.AddScoped<ITokenService, TokenService>();
+            services.AddScoped<IUserService, UserService>();
+            #endregion
 
             services.AddCors();
             services.AddControllers();

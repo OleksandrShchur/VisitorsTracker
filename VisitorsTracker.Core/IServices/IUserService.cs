@@ -11,7 +11,7 @@ namespace VisitorsTracker.Core.IServices
     {
         Task Create(UserDTO userDto);
 
-        Task Update(UserDTO userDto);
+        Task Update(UserDTO userDTO);
 
         Task ChangeRole(Guid uId, Guid rId);
 
@@ -26,5 +26,7 @@ namespace VisitorsTracker.Core.IServices
         //IEnumerable<UserDTO> Get(UsersFilterViewModel model, out int count, Guid id); // to do
 
         IEnumerable<UserDTO> GetUsersByRole(string role);
+
+        UserDTO GetUserByRefreshToken(string token);
     }
 }

@@ -54,9 +54,22 @@ namespace VisitorsTracker.Core.Services
             userDto.Id = result.Id;
         }
 
-        public async Task Update(UserDTO userDto)
+        public async Task Update(UserDTO userDTO)
         {
+            if (string.IsNullOrEmpty(userDTO.Email))
+            {
+                throw new VisitorsTrackerException("EMAIL cannot be empty");
+            }
 
+            if (!_context.Users.Any(u => u.Id == userDTO.Id))
+            {
+                throw new VisitorsTrackerException("Not found");
+            }
+
+            var result = _mapper.Map<UserDTO, User>(userDTO);
+
+            Update(result);
+            await _context.SaveChangesAsync();
         }
 
         public async Task ChangeRole(Guid uId, Guid rId)
@@ -157,6 +170,16 @@ namespace VisitorsTracker.Core.Services
                .AsEnumerable();
 
             return _mapper.Map<IEnumerable<UserDTO>>(users);
+        }
+
+        public UserDTO GetUserByRefreshToken(string token)
+        {
+            var user = _context.Users
+                .Include(u => u.Role)
+                .Include(u => u.RefreshTokens)
+                .SingleOrDefault(u => u.RefreshTokens.Any(t => t.Token.Equals(token)));
+
+            return _mapper.Map<UserDTO>(user);
         }
     }
 }

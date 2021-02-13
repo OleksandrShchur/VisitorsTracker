@@ -6,9 +6,11 @@ namespace VisitorsTracker.Db.EFCore
     public class AppDbContext : DbContext
     {
         public AppDbContext(DbContextOptions<AppDbContext> options)
-            : base(options)
+        : base(options)
         {
         }
+
+        public DbSet<RefreshToken> RefreshTokens { get; set; }
 
         public DbSet<User> Users { get; set; }
 
