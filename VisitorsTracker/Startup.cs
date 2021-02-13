@@ -1,6 +1,7 @@
 using AutoMapper;
 using FluentValidation.AspNetCore;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -10,11 +11,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
+using System.Threading.Tasks;
+using VisitorsTracker.Core.HostedService;
 using VisitorsTracker.Core.Infrastructure;
 using VisitorsTracker.Core.IServices;
 using VisitorsTracker.Core.Services;
@@ -22,22 +26,76 @@ using VisitorsTracker.Db.EFCore;
 
 namespace VisitorsTracker
 {
+    /// <summary>
+    /// The Startup class configures services and the app's request pipeline.
+    /// </summary>
     public class Startup
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Startup"/> class.
+        /// </summary>
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
         }
 
+        /// <summary>
+        /// Gets represents a set of key/value application configuration properties.
+        /// </summary>
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
+        /// <summary>
+        ///  This method gets called by the runtime. Use this method to add services to the container.
+        /// </summary>
         public void ConfigureServices(IServiceCollection services)
         {
+            #region Authorization and Autontification configuring...
             var signingKey = new SigningSymmetricKey(Configuration.GetValue<string>("JWTOptions:SecretKey"));
 
             services.AddSingleton<IJwtSigningEncodingKey>(signingKey);
             services.AddTransient<ITokenService, TokenService>();
+
+            var signingDecodingKey = (IJwtSigningDecodingKey)signingKey;
+
+            services
+                .AddMemoryCache()
+                .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.RequireHttpsMetadata = false;
+                    options.SaveToken = true;
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = signingDecodingKey.GetKey(),
+
+                        ValidateIssuer = false,
+                        ValidateAudience = false,
+
+                        ValidateLifetime = true,
+
+                        ClockSkew = TimeSpan.FromSeconds(5),
+                    };
+                    options.Events = new JwtBearerEvents
+                    {
+                        OnMessageReceived = context =>
+                        {
+                            var accessToken = context.Request.Query["access_token"];
+
+                            // If the request is for our hub...
+                            var path = context.HttpContext.Request.Path;
+                            if (!string.IsNullOrEmpty(accessToken) &&
+                                path.StartsWithSegments("/chatRoom"))
+                            {
+                                // Read the token out of the query string
+                                context.Token = accessToken;
+                            }
+
+                            return Task.CompletedTask;
+                        },
+                    };
+                });
+            #endregion
 
             string connection = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<AppDbContext>(options =>
@@ -47,6 +105,15 @@ namespace VisitorsTracker
             services.AddScoped<IAuthenticationService, AuthenticationService>();
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IPhotoService, PhotoService>();
+            services.AddScoped<IEmailService, EmailService>();
+
+            services.AddSingleton<ICacheHelper, CacheHelper>();
+
+            services.Configure<EmailOptionsModel>(Configuration.GetSection("EmailSenderOptions"));
+            services.Configure<JwtOptionsModel>(Configuration.GetSection("JWTOptions"));
+
+            services.AddHostedService<SendMessageHostedService>();
             #endregion
 
             services.AddCors();
@@ -124,7 +191,6 @@ namespace VisitorsTracker
             else
             {
                 app.UseExceptionHandler("/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
 
@@ -140,8 +206,6 @@ namespace VisitorsTracker
             //app.UseHttpContext();
             app.UseRouting();
             app.UseAuthentication();
-
-            app.UseRouting();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

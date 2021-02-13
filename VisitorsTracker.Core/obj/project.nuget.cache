@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "fol+bypbx8NkZQjQFg3JpVGiPs838s4kyhw5TBEcbUFtCFlwA4hvSL5MdCU5kqZxaK4m7gc9L8EXPNStkOMYKg==",
+  "dgSpecHash": "lIq17z+f/qQ0lyG3sPFvdi2kVE6f4eB83DiMNvMeaFFUxd7n1IoWX+DTOiKCNV/URmn+eSgsx8+Ja+x3AfGZZg==",
   "success": true,
   "projectFilePath": "E:\\University\\3 курс\\Курсова\\VisitorsTracker\\VisitorsTracker.Core\\VisitorsTracker.Core.csproj",
   "expectedPackageFiles": [
@@ -16,6 +16,7 @@
     "C:\\Users\\osur1\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
     "C:\\Users\\osur1\\.nuget\\packages\\mediatr\\9.0.0\\mediatr.9.0.0.nupkg.sha512",
     "C:\\Users\\osur1\\.nuget\\packages\\mediatr.extensions.microsoft.dependencyinjection\\9.0.0\\mediatr.extensions.microsoft.dependencyinjection.9.0.0.nupkg.sha512",
+    "C:\\Users\\osur1\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\3.1.12\\microsoft.aspnetcore.authentication.jwtbearer.3.1.12.nupkg.sha512",
     "C:\\Users\\osur1\\.nuget\\packages\\microsoft.aspnetcore.jsonpatch\\3.0.0\\microsoft.aspnetcore.jsonpatch.3.0.0.nupkg.sha512",
     "C:\\Users\\osur1\\.nuget\\packages\\microsoft.aspnetcore.mvc.newtonsoftjson\\3.0.0\\microsoft.aspnetcore.mvc.newtonsoftjson.3.0.0.nupkg.sha512",
     "C:\\Users\\osur1\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",

@@ -6,7 +6,7 @@ E:\University\3 курс\Курсова\VisitorsTracker\VisitorsTracker.Db\bin\D
 E:\University\3 курс\Курсова\VisitorsTracker\VisitorsTracker.Db\obj\Debug\netcoreapp3.1\VisitorsTracker.Db.csprojAssemblyReference.cache
 E:\University\3 курс\Курсова\VisitorsTracker\VisitorsTracker.Db\obj\Debug\netcoreapp3.1\VisitorsTracker.Db.AssemblyInfoInputs.cache
 E:\University\3 курс\Курсова\VisitorsTracker\VisitorsTracker.Db\obj\Debug\netcoreapp3.1\VisitorsTracker.Db.AssemblyInfo.cs
-E:\University\3 курс\Курсова\VisitorsTracker\VisitorsTracker.Db\obj\Debug\netcoreapp3.1\VisitorsTracker.Db.csproj.CoreCompileInputs.cache
 E:\University\3 курс\Курсова\VisitorsTracker\VisitorsTracker.Db\obj\Debug\netcoreapp3.1\VisitorsTracker.Db.dll
 E:\University\3 курс\Курсова\VisitorsTracker\VisitorsTracker.Db\obj\Debug\netcoreapp3.1\VisitorsTracker.Db.pdb
 E:\University\3 курс\Курсова\VisitorsTracker\VisitorsTracker.Db\obj\Debug\netcoreapp3.1\VisitorsTracker.Db.genruntimeconfig.cache
+E:\University\3 курс\Курсова\VisitorsTracker\VisitorsTracker.Db\obj\Debug\netcoreapp3.1\VisitorsTracker.Db.csproj.CoreCompileInputs.cache
