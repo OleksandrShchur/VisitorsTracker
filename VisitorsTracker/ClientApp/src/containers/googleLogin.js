@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { GoogleLogin } from 'react-google-login';
 import config from '../config';
+import loginGoogle from '../actions/Authentication';
 
 class LoginGoogle extends Component {
     render() {
@@ -8,7 +9,7 @@ class LoginGoogle extends Component {
             if (typeof response.profileObj.email === 'undefined') {
                 this.props.login.loginError = " Please add email to your google account!"
             }
-            this.props.loginGoogle(
+            loginGoogle(
                 response.tokenId,
                 response.profileObj.email,
                 response.profileObj.name,

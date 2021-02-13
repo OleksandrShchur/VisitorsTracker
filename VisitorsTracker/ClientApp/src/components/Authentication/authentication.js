@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import _authenticate from '../../actions/authentication';
 
 class Authentication extends Component {
     componentWillMount = () => {
