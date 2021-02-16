@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Threading.Tasks;
+using VisitorsTracker.Core.DTOs;
 
 namespace VisitorsTracker.Core.IServices
 {
     public interface IEmailService
     {
+        Task SendEmailAsync(EmailDTO emailDTO);
     }
 }

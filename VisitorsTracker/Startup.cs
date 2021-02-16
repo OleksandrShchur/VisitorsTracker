@@ -21,8 +21,10 @@ using System.Threading.Tasks;
 using VisitorsTracker.Core.HostedService;
 using VisitorsTracker.Core.Infrastructure;
 using VisitorsTracker.Core.IServices;
+using VisitorsTracker.Core.NotificationHandlers;
 using VisitorsTracker.Core.Services;
 using VisitorsTracker.Db.EFCore;
+using VisitorsTracker.Mapping;
 
 namespace VisitorsTracker
 {
@@ -102,7 +104,7 @@ namespace VisitorsTracker
 
             #region Configure our services...
             services.AddScoped<IAuthenticationService, AuthenticationService>();
-            services.AddTransient<IUserService, UserService>();
+            services.AddScoped<IUserService, UserService>();
             services.AddScoped<IEmailService, EmailService>();
 
             services.AddSingleton<ICacheHelper, CacheHelper>();
@@ -131,10 +133,10 @@ namespace VisitorsTracker
             });
 
             // MediatR for sending email
-            //services.AddMediatR(typeof(EventCreatedHandler).Assembly);
+            services.AddMediatR(typeof(UserProfileCreatedHandler).Assembly);
 
             // AutoMapper for changing the type of classes between levels in solution
-            //services.AddAutoMapper(typeof(AutoMapperProfile).GetTypeInfo().Assembly);
+            services.AddAutoMapper(typeof(AutoMapperProfile).GetTypeInfo().Assembly);
 
             // Swagger for using only back-end side in processing solution
             services.AddSwaggerGen(c =>

@@ -19,15 +19,18 @@ namespace VisitorsTracker.Controllers
         private readonly IUserService _userService;
         private readonly IAuthenticationService _authService;
         private readonly IMapper _mapper;
+        private readonly ITokenService _tokenService;
 
         public AuthenticationController(
             IUserService userSrv,
             IMapper mapper,
-            IAuthenticationService authSrv)
+            IAuthenticationService authSrv,
+            ITokenService tokenService)
         {
             _userService = userSrv;
             _mapper = mapper;
             _authService = authSrv;
+            _tokenService = tokenService;
         }
 
         /// <summary>
@@ -41,11 +44,11 @@ namespace VisitorsTracker.Controllers
         [HttpPost("[action]")]
         public async Task<IActionResult> GoogleLogin([FromBody] UserViewModel userView)
         {
-            var payload = await GoogleJsonWebSignature.ValidateAsync(new JsonWebToken().ToString(),
-                new GoogleJsonWebSignature.ValidationSettings());
+            var payload = await GoogleJsonWebSignature.ValidateAsync(
+                userView.TokenId, new GoogleJsonWebSignature.ValidationSettings());
             UserDTO userExisting = _userService.GetByEmail(payload.Email);
 
-            if (userExisting == null && !string.IsNullOrEmpty(payload.Email) && payload.Email.Contains("@chnu.edu.ua"))
+            if (userExisting == null && !string.IsNullOrEmpty(payload.Email) && payload.HostedDomain.Equals("chnu.edu.ua"))
             {
                 var user = _mapper.Map<UserViewModel, UserDTO>(userView);
                 user.Email = payload.Email;
@@ -56,6 +59,9 @@ namespace VisitorsTracker.Controllers
 
             await SetPhoto(userExisting, userView.PhotoUrl);
             var userInfo = _mapper.Map<UserInfoViewModel>(_userService.GetByEmail(payload.Email));
+            var authResponseModel = await _authService.AuthenticateUserFromExternalProvider(payload.Email);
+            userInfo.Token = authResponseModel.JwtToken;
+            _tokenService.SetTokenCookie(authResponseModel.RefreshToken);
 
             return Ok(userInfo);
         }
