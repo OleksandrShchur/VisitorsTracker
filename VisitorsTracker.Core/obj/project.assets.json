@@ -2419,7 +2419,7 @@
         "type": "project",
         "framework": ".NETCoreApp,Version=v3.1",
         "dependencies": {
-          "AutoMapper.Extensions.Microsoft.DependencyInjection": "8.1.0",
+          "AutoMapper.Extensions.Microsoft.DependencyInjection": "8.1.1",
           "FluentValidation.AspNetCore": "9.3.0",
           "Google.Apis.Auth": "1.49.0",
           "MediatR": "9.0.0",
@@ -8276,5 +8276,16 @@
         "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.403\\RuntimeIdentifierGraph.json"
       }
     }
-  }
+  },
+  "logs": [
+    {
+      "code": "NU1605",
+      "level": "Error",
+      "message": "Detected package downgrade: AutoMapper.Extensions.Microsoft.DependencyInjection from 8.1.1 to 8.1.0. Reference the package directly from the project to select a different version. \r\n VisitorsTracker.Core -> VisitorsTracker.Db -> AutoMapper.Extensions.Microsoft.DependencyInjection (>= 8.1.1) \r\n VisitorsTracker.Core -> AutoMapper.Extensions.Microsoft.DependencyInjection (>= 8.1.0)",
+      "libraryId": "AutoMapper.Extensions.Microsoft.DependencyInjection",
+      "targetGraphs": [
+        ".NETCoreApp,Version=v3.1"
+      ]
+    }
+  ]
 }
