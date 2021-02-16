@@ -1,10 +1,13 @@
 ﻿using AutoMapper;
 using MediatR;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using VisitorsTracker.Core.DTOs;
 using VisitorsTracker.Core.Exceptions;
@@ -16,21 +19,26 @@ namespace VisitorsTracker.Core.Services
 {
     public class UserService : BaseService<User>, IUserService
     {
-        private readonly IPhotoService _photoService;
         private readonly IMediator _mediator;
         private readonly IEmailService _emailService;
+        private readonly IHttpClientFactory _clientFactory;
+        private readonly Lazy<HttpClient> _client;
+        private readonly IWebHostEnvironment _appEnvironment;
 
         public UserService(
             AppDbContext context,
             IMapper mapper,
-            IPhotoService photoSrv,
             IMediator mediator,
-            IEmailService emailService)
+            IEmailService emailService,
+            IHttpClientFactory clientFactory,
+            IWebHostEnvironment appEnvironment)
             : base(context, mapper)
-        {
-            _photoService = photoSrv;
+        { 
             _mediator = mediator;
             _emailService = emailService;
+            _clientFactory = clientFactory;
+            _client = new Lazy<HttpClient>(() => clientFactory.CreateClient());
+            _appEnvironment = appEnvironment;
         }
 
         public async Task Create(UserDTO userDto)
@@ -103,12 +111,12 @@ namespace VisitorsTracker.Core.Services
 
             if (user.Photo != null)
             {
-                await _photoService.Delete(user);
+               await Delete(user);
             }
 
             try
             {
-                user.Photo = await _photoService.AddPhoto(avatar, user);
+                user.Photo = await AddPhoto(avatar, user);
                 Update(user); // delete, if Update have already done in Photo service
                 await _context.SaveChangesAsync();
             }
@@ -181,5 +189,78 @@ namespace VisitorsTracker.Core.Services
 
             return _mapper.Map<UserDTO>(user);
         }
+
+        public async Task<string> AddPhoto(IFormFile uploadedFile, User user) // todo
+        {
+            if (!IsValidImage(uploadedFile))
+            {
+                throw new ArgumentException();
+            }
+
+            string path = "/Img/" + uploadedFile.FileName;
+            // сохраняем файл в папку Files в каталоге wwwroot
+            using (var fileStream = new FileStream(_appEnvironment.WebRootPath + path, FileMode.Create))
+            {
+                await uploadedFile.CopyToAsync(fileStream);
+            }
+            user.Photo = path;
+
+            //_context.Files.Add(path);
+            /*FileModel file = new FileModel { Name = uploadedFile.FileName, Path = path };
+            _context.Files.Add(file);*/
+            _context.SaveChanges();
+
+            //Insert(photo);
+            await _context.SaveChangesAsync();
+
+            return path;
+        }
+
+        public async Task<string> AddPhotoByURL(string url, User user) // to do
+        {
+            if (!await IsImageUrl(url))
+            {
+                throw new ArgumentException();
+            }
+
+            Uri uri = new Uri(url);
+            byte[] imgData = _client.Value.GetByteArrayAsync(uri).Result;
+            /*var photo = new Photo
+            {
+                Thumb = imgData,
+                Img = imgData,
+            };
+
+            Insert(photo);
+            await _context.SaveChangesAsync();*/
+
+            return url;
+        }
+
+        private async Task<bool> IsImageUrl(string url)
+        {
+            try
+            {
+                HttpResponseMessage result = await _client.Value.GetAsync(url);
+                return result.IsSuccessStatusCode;
+            }
+            catch (HttpRequestException)
+            {
+                return false;
+            }
+        }
+
+        public async Task Delete(User user)
+        {
+            /*var photo = _context.Photos.Find(id);
+            if (photo != null)
+            {
+                Delete(photo);
+                await _context.SaveChangesAsync();
+            }*/
+            user.Photo = string.Empty;
+        }
+
+        private static bool IsValidImage(IFormFile file) => file != null;// && file.IsImage();
     }
 }

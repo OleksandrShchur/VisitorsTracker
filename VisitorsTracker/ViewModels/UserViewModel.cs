@@ -6,6 +6,8 @@ namespace VisitorsTracker.ViewModels
     {
         public Guid Id { get; set; }
 
+        public string TokenId { get; set; }
+
         public string Name { get; set; }
 
         public string Email { get; set; }

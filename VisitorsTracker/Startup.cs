@@ -21,8 +21,10 @@ using System.Threading.Tasks;
 using VisitorsTracker.Core.HostedService;
 using VisitorsTracker.Core.Infrastructure;
 using VisitorsTracker.Core.IServices;
+using VisitorsTracker.Core.NotificationHandlers;
 using VisitorsTracker.Core.Services;
 using VisitorsTracker.Db.EFCore;
+using VisitorsTracker.Mapping;
 
 namespace VisitorsTracker
 {
@@ -84,8 +86,7 @@ namespace VisitorsTracker
 
                             // If the request is for our hub...
                             var path = context.HttpContext.Request.Path;
-                            if (!string.IsNullOrEmpty(accessToken) &&
-                                path.StartsWithSegments("/chatRoom"))
+                            if (!string.IsNullOrEmpty(accessToken) )
                             {
                                 // Read the token out of the query string
                                 context.Token = accessToken;
@@ -103,14 +104,12 @@ namespace VisitorsTracker
 
             #region Configure our services...
             services.AddScoped<IAuthenticationService, AuthenticationService>();
-            services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IUserService, UserService>();
-            services.AddScoped<IPhotoService, PhotoService>();
             services.AddScoped<IEmailService, EmailService>();
 
             services.AddSingleton<ICacheHelper, CacheHelper>();
 
-            services.Configure<EmailOptionsModel>(Configuration.GetSection("EmailSenderOptions"));
+            //services.Configure<EmailOptionsModel>(Configuration.GetSection("EmailSenderOptions"));
             services.Configure<JwtOptionsModel>(Configuration.GetSection("JWTOptions"));
 
             services.AddHostedService<SendMessageHostedService>();
@@ -134,10 +133,10 @@ namespace VisitorsTracker
             });
 
             // MediatR for sending email
-            //services.AddMediatR(typeof(EventCreatedHandler).Assembly);
+            services.AddMediatR(typeof(UserProfileCreatedHandler).Assembly);
 
             // AutoMapper for changing the type of classes between levels in solution
-            //services.AddAutoMapper(typeof(AutoMapperProfile).GetTypeInfo().Assembly);
+            services.AddAutoMapper(typeof(AutoMapperProfile).GetTypeInfo().Assembly);
 
             // Swagger for using only back-end side in processing solution
             services.AddSwaggerGen(c =>
