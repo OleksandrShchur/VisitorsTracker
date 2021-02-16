@@ -11,5 +11,7 @@ namespace VisitorsTracker.Core.IServices
         Task FirstAuthenticate(UserDTO userDto);
 
         UserDTO GetCurrentUser(ClaimsPrincipal userClaims);
+
+        Task<AuthenticateResponseModel> AuthenticateUserFromExternalProvider(string email);
     }
 }

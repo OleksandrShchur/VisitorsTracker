@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using VisitorsTracker.Core.DTOs;
+using VisitorsTracker.Db.Entities;
 
 namespace VisitorsTracker.Core.IServices
 {
@@ -28,5 +28,11 @@ namespace VisitorsTracker.Core.IServices
         IEnumerable<UserDTO> GetUsersByRole(string role);
 
         UserDTO GetUserByRefreshToken(string token);
+
+        Task<string> AddPhoto(IFormFile uploadedFile, User user);
+
+        Task<string> AddPhotoByURL(string url, User user);
+
+        Task Delete(User id);
     }
 }
