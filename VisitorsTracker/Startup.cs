@@ -84,8 +84,7 @@ namespace VisitorsTracker
 
                             // If the request is for our hub...
                             var path = context.HttpContext.Request.Path;
-                            if (!string.IsNullOrEmpty(accessToken) &&
-                                path.StartsWithSegments("/chatRoom"))
+                            if (!string.IsNullOrEmpty(accessToken) )
                             {
                                 // Read the token out of the query string
                                 context.Token = accessToken;
@@ -103,14 +102,12 @@ namespace VisitorsTracker
 
             #region Configure our services...
             services.AddScoped<IAuthenticationService, AuthenticationService>();
-            services.AddScoped<ITokenService, TokenService>();
-            services.AddScoped<IUserService, UserService>();
-            services.AddScoped<IPhotoService, PhotoService>();
+            services.AddTransient<IUserService, UserService>();
             services.AddScoped<IEmailService, EmailService>();
 
             services.AddSingleton<ICacheHelper, CacheHelper>();
 
-            services.Configure<EmailOptionsModel>(Configuration.GetSection("EmailSenderOptions"));
+            //services.Configure<EmailOptionsModel>(Configuration.GetSection("EmailSenderOptions"));
             services.Configure<JwtOptionsModel>(Configuration.GetSection("JWTOptions"));
 
             services.AddHostedService<SendMessageHostedService>();

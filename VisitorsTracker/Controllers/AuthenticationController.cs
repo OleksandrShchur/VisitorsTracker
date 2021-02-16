@@ -19,18 +19,15 @@ namespace VisitorsTracker.Controllers
         private readonly IUserService _userService;
         private readonly IAuthenticationService _authService;
         private readonly IMapper _mapper;
-        private readonly IPhotoService _photoService;
 
         public AuthenticationController(
             IUserService userSrv,
             IMapper mapper,
-            IAuthenticationService authSrv,
-            IPhotoService photoService)
+            IAuthenticationService authSrv)
         {
             _userService = userSrv;
             _mapper = mapper;
             _authService = authSrv;
-            _photoService = photoService;
         }
 
         /// <summary>

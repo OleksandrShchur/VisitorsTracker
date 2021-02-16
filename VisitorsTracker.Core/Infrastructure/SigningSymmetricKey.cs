@@ -9,7 +9,7 @@ namespace VisitorsTracker.Core.Infrastructure
 
         public SigningSymmetricKey(string key)
         {
-            this._secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("JWTOptions:SecretKey"));
+            this._secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key));
         }
 
         public string SigningAlgorithm { get; } = SecurityAlgorithms.HmacSha256;
