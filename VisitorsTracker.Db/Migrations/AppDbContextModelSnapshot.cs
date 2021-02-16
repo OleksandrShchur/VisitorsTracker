@@ -36,6 +36,43 @@ namespace VisitorsTracker.Db.Migrations
                     b.ToTable("Groups");
                 });
 
+            modelBuilder.Entity("VisitorsTracker.Db.Entities.RefreshToken", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("Created")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedByIp")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Expires")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ReplacedByToken")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("Revoked")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("RevokedByIp")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Token")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("RefreshTokens");
+                });
+
             modelBuilder.Entity("VisitorsTracker.Db.Entities.Role", b =>
                 {
                     b.Property<Guid>("Id")
@@ -92,6 +129,13 @@ namespace VisitorsTracker.Db.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("VisitorsTracker.Db.Entities.RefreshToken", b =>
+                {
+                    b.HasOne("VisitorsTracker.Db.Entities.User", null)
+                        .WithMany("RefreshTokens")
+                        .HasForeignKey("UserId");
+                });
+
             modelBuilder.Entity("VisitorsTracker.Db.Entities.User", b =>
                 {
                     b.HasOne("VisitorsTracker.Db.Entities.Group", "Group")
@@ -119,6 +163,11 @@ namespace VisitorsTracker.Db.Migrations
             modelBuilder.Entity("VisitorsTracker.Db.Entities.Role", b =>
                 {
                     b.Navigation("Users");
+                });
+
+            modelBuilder.Entity("VisitorsTracker.Db.Entities.User", b =>
+                {
+                    b.Navigation("RefreshTokens");
                 });
 #pragma warning restore 612, 618
         }

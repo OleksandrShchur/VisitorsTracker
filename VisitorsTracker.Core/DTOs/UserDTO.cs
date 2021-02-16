@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using VisitorsTracker.Db.Entities;
 using VisitorsTracker.Db.Enums;
 
 namespace VisitorsTracker.Core.DTOs
@@ -22,5 +24,7 @@ namespace VisitorsTracker.Core.DTOs
         public virtual Guid RoleId { get; set; }
 
         public string PhotoUrl { get; set; }
+
+        public IEnumerable<RefreshToken> RefreshTokens { get; set; }
     }
 }

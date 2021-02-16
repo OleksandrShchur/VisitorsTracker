@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Security.Claims;
-using System.Text;
+﻿using System.Security.Claims;
 using System.Threading.Tasks;
 using VisitorsTracker.Core.DTOs;
-using VisitorsTracker.Db.IBaseService;
 
 namespace VisitorsTracker.Core.IServices
 {
@@ -15,5 +11,7 @@ namespace VisitorsTracker.Core.IServices
         Task FirstAuthenticate(UserDTO userDto);
 
         UserDTO GetCurrentUser(ClaimsPrincipal userClaims);
+
+        Task<AuthenticateResponseModel> AuthenticateUserFromExternalProvider(string email);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using VisitorsTracker.Db.Enums;
 
 namespace VisitorsTracker.Db.Entities
@@ -26,5 +27,7 @@ namespace VisitorsTracker.Db.Entities
         public Guid GroupId { get; set; }
 
         public virtual Group Group { get; set; }
+
+        public IEnumerable<RefreshToken> RefreshTokens { get; set; }
     }
 }

@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 using VisitorsTracker.Core.DTOs;
+using VisitorsTracker.Db.Entities;
 
 namespace VisitorsTracker.Core.IServices
 {
@@ -11,7 +11,7 @@ namespace VisitorsTracker.Core.IServices
     {
         Task Create(UserDTO userDto);
 
-        Task Update(UserDTO userDto);
+        Task Update(UserDTO userDTO);
 
         Task ChangeRole(Guid uId, Guid rId);
 
@@ -26,5 +26,13 @@ namespace VisitorsTracker.Core.IServices
         //IEnumerable<UserDTO> Get(UsersFilterViewModel model, out int count, Guid id); // to do
 
         IEnumerable<UserDTO> GetUsersByRole(string role);
+
+        UserDTO GetUserByRefreshToken(string token);
+
+        Task<string> AddPhoto(IFormFile uploadedFile, User user);
+
+        Task<string> AddPhotoByURL(string url, User user);
+
+        Task Delete(User id);
     }
 }
