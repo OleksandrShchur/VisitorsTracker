@@ -24,7 +24,7 @@ namespace VisitorsTracker.Db.Entities
 
         public string Photo { get; set; }
 
-        public Guid GroupId { get; set; }
+        public Guid? GroupId { get; set; }
 
         public virtual Group Group { get; set; }
 

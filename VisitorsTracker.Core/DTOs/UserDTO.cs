@@ -23,6 +23,8 @@ namespace VisitorsTracker.Core.DTOs
 
         public virtual Guid RoleId { get; set; }
 
+        public virtual Role Role { get; set; }
+
         public string PhotoUrl { get; set; }
 
         public IEnumerable<RefreshToken> RefreshTokens { get; set; }

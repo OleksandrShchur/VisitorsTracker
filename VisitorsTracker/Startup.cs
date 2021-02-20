@@ -1,11 +1,8 @@
-using AutoMapper;
 using FluentValidation.AspNetCore;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -86,7 +83,7 @@ namespace VisitorsTracker
 
                             // If the request is for our hub...
                             var path = context.HttpContext.Request.Path;
-                            if (!string.IsNullOrEmpty(accessToken) )
+                            if (!string.IsNullOrEmpty(accessToken))
                             {
                                 // Read the token out of the query string
                                 context.Token = accessToken;
@@ -100,7 +97,11 @@ namespace VisitorsTracker
 
             string connection = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<AppDbContext>(options =>
-                options.UseSqlServer(connection));
+            {
+                options.UseSqlServer(connection);
+                options.EnableSensitiveDataLogging();
+            });
+                
 
             #region Configure our services...
             services.AddScoped<IAuthenticationService, AuthenticationService>();
