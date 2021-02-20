@@ -57,9 +57,9 @@ namespace VisitorsTracker.Controllers
                 await _userService.Create(user);
             }
 
-            await SetPhoto(userExisting, userView.PhotoUrl);
-            var userInfo = _mapper.Map<UserInfoViewModel>(_userService.GetByEmail(payload.Email));
+            //await SetPhoto(userExisting, userView.PhotoUrl);
             var authResponseModel = await _authService.AuthenticateUserFromExternalProvider(payload.Email);
+            var userInfo = _mapper.Map<UserInfoViewModel>(_userService.GetByEmail(payload.Email));
             userInfo.Token = authResponseModel.JwtToken;
             _tokenService.SetTokenCookie(authResponseModel.RefreshToken);
 

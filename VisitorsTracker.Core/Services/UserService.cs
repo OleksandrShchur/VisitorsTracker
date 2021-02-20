@@ -59,7 +59,11 @@ namespace VisitorsTracker.Core.Services
             }
 
             await _context.SaveChangesAsync();
-            userDto.Id = result.Id;
+            /*userDto.Id = result.Id;
+            if (!userDto.EmailConfirmed)
+            {
+                await _mediator.Publish(new RegisterVerificationMessage(userDto));
+            }*/
         }
 
         public async Task Update(UserDTO userDTO)
@@ -141,7 +145,6 @@ namespace VisitorsTracker.Core.Services
         {
             var user = _mapper.Map<UserDTO>(
                  _context.Users
-                .Include(u => u.Photo)
                 .Include(u => u.Role)
                 .AsNoTracking()
                 .FirstOrDefault(o => o.Email == email));
