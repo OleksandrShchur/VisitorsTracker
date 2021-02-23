@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import { GoogleLogin } from 'react-google-login';
-import config from '../config';
-import loginGoogle from '../actions/Authentication';
+
+import config from '../../config';
+import loginGoogle from '../../actions/Authentication';
+
+import './googleLogin.css';
 
 class LoginGoogle extends Component {
     render() {
@@ -24,7 +27,7 @@ class LoginGoogle extends Component {
                     render={renderProps => (
                         <button className="btnGoogle" onClick={renderProps.onClick} disabled={renderProps.disabled}>
                             <i className="fab fa-google fa-lg"></i>
-                            <span>Log in</span>
+                            <span>Вхід</span>
                         </button>
                     )}
                     onSuccess={responseGoogle}
