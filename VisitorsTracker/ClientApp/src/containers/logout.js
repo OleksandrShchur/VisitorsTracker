@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
+import { connect } from "react-redux";
 import { withRouter, Redirect } from "react-router-dom";
+import { logout } from "../actions/authActions";
 
 class Logout extends Component {
     componentWillMount(){
@@ -7,7 +9,7 @@ class Logout extends Component {
     }
 
     componentDidMount() {
-        // this.props.logout();
+        //this.props.logout();
     }
 
     render(){
@@ -19,5 +21,18 @@ class Logout extends Component {
     }
 };
 
+const mapStateToProps = (state) => {
+    return {
+      login: state.login
+    };
+  };
   
-  export default Logout;
+  const mapDispatchToProps = (dispatch) => {
+    return {
+      logout: () => {
+        dispatch(logout());
+      }
+    }
+  };
+  
+  export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Logout));

@@ -1,9 +1,11 @@
+import { connect } from 'react-redux';
 import React, { Component } from 'react';
-import Login from '../components/Login';
+import Login from '../components/login';
+import login from '../actions/login';
 
 class LoginWrapper extends Component {
   submit = values => {
-    this.props.login(values.email, values.password);
+    this.props.login(values.email);
   };
 
   render() {
@@ -17,4 +19,19 @@ class LoginWrapper extends Component {
   }
 }
 
-export default LoginWrapper;
+const mapStateToProps = state => {
+  return {
+    loginStatus: state.login
+  }
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    login: (email) => dispatch(login(email))
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(LoginWrapper);

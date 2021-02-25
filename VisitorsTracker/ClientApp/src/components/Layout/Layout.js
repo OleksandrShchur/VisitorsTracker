@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Container } from 'reactstrap';
+import LeftSidebarWrapper from '../left-sidebar/index';
 import { NavMenu } from '../NavMenu/NavMenu';
 
 export class Layout extends Component {
@@ -9,6 +10,7 @@ export class Layout extends Component {
     return (
       <div>
         <NavMenu />
+        <LeftSidebarWrapper />
         <Container>
           {this.props.children}
         </Container>
