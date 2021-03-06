@@ -3,7 +3,7 @@ import Login from '../components/Login';
 
 class LoginWrapper extends Component {
   submit = values => {
-    this.props.login(values.email, values.password);
+    this.props.login(values.email);
   };
 
   render() {
