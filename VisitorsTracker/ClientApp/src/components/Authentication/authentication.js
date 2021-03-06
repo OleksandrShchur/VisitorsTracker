@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-export class Authentication extends Component {
+class Authentication extends Component {
     componentWillMount = () => {
         const { id, token } = this.props.match.params;
         this.props.auth({ userId: id, token: token })
@@ -16,3 +16,5 @@ export class Authentication extends Component {
         )
     }
 }
+
+export default Authentication;

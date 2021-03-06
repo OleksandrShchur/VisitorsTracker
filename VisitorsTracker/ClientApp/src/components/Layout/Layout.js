@@ -1,17 +1,20 @@
-import React from 'react';
+import React, { Component } from 'react';
+import { Container } from 'reactstrap';
 import LeftSidebarWrapper from '../left-sidebar/index';
 import { NavMenu } from '../NavMenu/NavMenu';
 
-const Layout = ({ children }) => {
-  return (
-      <>
-          <NavMenu />
-          <LeftSidebarWrapper />
-          <div id="main" className="container-fluid pl-5">
-              {children}
-          </div>
-      </>
-  );
-}
+export default class Layout extends Component {
+  static displayName = Layout.name;
 
-export default Layout;
+  render () {
+    return (
+      <div>
+        <NavMenu />
+        <LeftSidebarWrapper />
+        <Container>
+          {this.props.children}
+        </Container>
+      </div>
+    );
+  }
+}
