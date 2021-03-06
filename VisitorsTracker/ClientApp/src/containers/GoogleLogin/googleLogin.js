@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { GoogleLogin } from 'react-google-login';
 
 import config from '../../config';
-import loginGoogle from '../../actions/authentication';
+import loginGoogle from '../../actions/Authentication';
 
 import './googleLogin.css';
 
