@@ -1,6 +1,6 @@
 import React from 'react';
 import LeftSidebarWrapper from '../left-sidebar/index';
-import { NavMenu } from './NavMenu';
+import { NavMenu } from '../NavMenu/NavMenu';
 
 const Layout = ({ children }) => {
   return (
