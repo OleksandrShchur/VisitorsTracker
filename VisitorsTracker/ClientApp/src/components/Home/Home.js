@@ -3,9 +3,7 @@ import Login from '../Login/index';
 import logo from '../../Images/chnuUkr.png';
 import './Home.css';
 
-export default class Home extends Component {
-  static displayName = Home.name;
-
+export class Home extends Component {
   render () {
     return (
       <div>
