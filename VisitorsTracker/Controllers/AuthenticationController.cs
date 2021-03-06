@@ -53,7 +53,7 @@ namespace VisitorsTracker.Controllers
                 var user = _mapper.Map<UserViewModel, UserDTO>(userView);
                 user.Email = payload.Email;
                 user.Name = payload.Name;
-                //user.Photo = await _photoService.AddPhotoByURL(userView.PhotoUrl);
+                //user.Photo = await _userService.AddPhotoByURL(userView.PhotoUrl);
                 await _userService.Create(user);
             }
 
