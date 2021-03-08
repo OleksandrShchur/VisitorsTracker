@@ -17,4 +17,19 @@ class LoginWrapper extends Component {
   }
 }
 
-export default LoginWrapper;
+const mapStateToProps = state => {
+  return {
+    loginStatus: state.login
+  }
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    login: (email, password) => dispatch(login(email, password))
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(LoginWrapper);

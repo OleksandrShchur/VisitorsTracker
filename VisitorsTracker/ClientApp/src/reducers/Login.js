@@ -3,8 +3,8 @@ import {
     SET_LOGIN_SUCCESS,
     SET_LOGIN_ERROR
   } from "../actions/Login";
-  import { SET_LOGOUT } from '../actions/logout';
-  import initialState from '../store/initialState';
+  import { SET_LOGOUT } from '../actions/Logout';
+  import initialState from '../store/InitialState';
   
   export const reducer = (
     state = initialState.login,

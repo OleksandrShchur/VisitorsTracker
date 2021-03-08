@@ -9,14 +9,12 @@ import Profile from './components/Profile/index';
 import './custom.css'
 
 export default class App extends Component {
-  static displayName = App.name;
-
   render () {
     return (
       <Layout>
         <Route exact path='/' component={Home} />
         <Route path='/aboutUs' component={AboutUs} />
-        <Route path="/profile/" component={Profile} />
+        <Route path="/profile" component={Profile} />
       </Layout>
     );
   }

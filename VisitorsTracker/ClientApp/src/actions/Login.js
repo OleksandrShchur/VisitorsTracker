@@ -1,4 +1,3 @@
-import { useDebugValue } from 'react';
 import AuthenticationService from '../services/authenticationService';
 
 export const SET_LOGIN_PENDING = "SET_LOGIN_PENDING";
@@ -10,6 +9,7 @@ const api_serv = new AuthenticationService();
 
 export default function loginGoogle(tokenId, email, name, imageUrl) {
     debugger;
+    console.log('dick');
     return dispatch => {
         dispatch(setLoginPending(true));
         

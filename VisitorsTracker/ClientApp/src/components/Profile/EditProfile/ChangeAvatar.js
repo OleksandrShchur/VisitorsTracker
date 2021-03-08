@@ -1,5 +1,5 @@
 import React from 'react';
-import DropZoneField from '../../helpers/DropZoneField';
+import DropZoneField from '../../Helpers/DropZoneField';
 import { reduxForm, Field } from 'redux-form';
 import Button from "@material-ui/core/Button";
 import { connect } from 'react-redux';

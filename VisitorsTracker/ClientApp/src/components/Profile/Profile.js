@@ -1,16 +1,16 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import Moment from 'react-moment';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+
 import EditGenderContainer from '../../containers/EditProfileContainers/EditGenderContainer';
 import EditBirthdayContainer from '../../containers/EditProfileContainers/EditBirthdayContainer';
-import genders from '../../constants/GenderConstants';
+import genders from '../../constants/genderConstants';
 import ChangeAvatarWrapper from '../../containers/EditProfileContainers/ChangeAvatar';
 
 const useStyles = makeStyles(theme => ({
@@ -48,9 +48,7 @@ const Profile = (props) => {
                 </ExpansionPanelSummary>
                 <ExpansionPanelDetails>
                     <Typography>
-                        <MuiThemeProvider>
-                            <ChangeAvatarWrapper />
-                        </MuiThemeProvider>
+                        <ChangeAvatarWrapper />
                     </Typography>
                 </ExpansionPanelDetails>
             </ExpansionPanel>
@@ -74,9 +72,7 @@ const Profile = (props) => {
                 </ExpansionPanelSummary>
                 <ExpansionPanelDetails>
                     <Typography>
-                        <MuiThemeProvider>
-                            <EditGenderContainer />
-                        </MuiThemeProvider>
+                        <EditGenderContainer />
                     </Typography>
                 </ExpansionPanelDetails>
             </ExpansionPanel>
@@ -93,9 +89,7 @@ const Profile = (props) => {
                 </ExpansionPanelSummary>
                 <ExpansionPanelDetails>
                     <Typography>
-                        <MuiThemeProvider>
-                            <EditBirthdayContainer />
-                        </MuiThemeProvider>
+                        <EditBirthdayContainer />
                     </Typography>
                 </ExpansionPanelDetails>
             </ExpansionPanel>

@@ -57,7 +57,7 @@ class LeftSidebar extends Component {
                             {/* {this.props.user.id && */}
                                 <>
                                     <NavItem
-                                        to={'/'}
+                                        to={'/profile'}
                                         icon={'fa fa-user'}
                                         text={"Профіль"}
                                     />

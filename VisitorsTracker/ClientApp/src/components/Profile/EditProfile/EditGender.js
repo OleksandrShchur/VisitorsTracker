@@ -1,8 +1,9 @@
 import React from "react";
 import { Field, reduxForm } from "redux-form";
 
-import SelectField from "material-ui/SelectField";
-import MenuItem from "material-ui/MenuItem";
+//import SelectField from "material-ui/SelectField";
+import Select from '@material-ui/core/Select';
+import MenuItem from "@material-ui/core/MenuItem";
 import Button from "@material-ui/core/Button";
 
 const renderSelectField = ({
@@ -12,7 +13,7 @@ const renderSelectField = ({
     children,
     ...custom
 }) => (
-        <SelectField
+        <Select
             floatingLabelText={label}
             errorText={touched && error}
             {...input}

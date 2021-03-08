@@ -1,3 +1,3 @@
-import * as Module from './helpers';
+import * as Module from './Helpers';
 
 export default Module;

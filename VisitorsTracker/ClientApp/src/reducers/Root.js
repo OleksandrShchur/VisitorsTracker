@@ -1,4 +1,4 @@
-import { reducer as LoginReducer } from '.Login';
+import { reducer as LoginReducer } from './Login';
 
 const rootReducers = {
     login: LoginReducer

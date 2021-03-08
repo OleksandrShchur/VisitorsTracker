@@ -3,6 +3,8 @@ import { GoogleLogin } from 'react-google-login';
 
 import config from '../../config';
 import loginGoogle from '../../actions/Login';
+import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 import './googleLogin.css';
 
@@ -12,7 +14,7 @@ class LoginGoogle extends Component {
             if (typeof response.profileObj.email === 'undefined') {
                 this.props.login.loginError = " Please add email to your google account!"
             }
-            loginGoogle(
+            this.props.loginGoogle(
                 response.tokenId,
                 response.profileObj.email,
                 response.profileObj.name,
@@ -38,4 +40,16 @@ class LoginGoogle extends Component {
     }
 };
 
-export default LoginGoogle;
+const mapStateToProps = (state) => {
+    return {
+        login: state.login
+    }
+};
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        loginGoogle: (tokenId, email, name, imageUrl) => dispatch(loginGoogle(tokenId, email, name, imageUrl))
+    }
+};
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(LoginGoogle));

@@ -6,8 +6,6 @@ import './Layout.css';
 import './ColorLib.css';
 
 export class Layout extends Component {
-  static displayName = Layout.name;
-
   render () {
     return (
       <div>
