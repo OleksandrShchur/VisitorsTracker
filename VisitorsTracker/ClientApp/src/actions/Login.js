@@ -8,8 +8,6 @@ export const SET_USER = "SET_USER";
 const api_serv = new AuthenticationService();
 
 export default function loginGoogle(tokenId, email, name, imageUrl) {
-    debugger;
-    console.log('dick');
     return dispatch => {
         dispatch(setLoginPending(true));
         

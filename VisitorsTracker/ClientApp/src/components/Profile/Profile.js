@@ -44,7 +44,7 @@ const Profile = (props) => {
                     aria-controls="panel1bh-content"
                     id="panel1bh-header"
                 >
-                    <Typography className={classes.heading}>Change Avatar</Typography>
+                    <Typography className={classes.heading}>Змінити аватар</Typography>
                 </ExpansionPanelSummary>
                 <ExpansionPanelDetails>
                     <Typography>
@@ -58,7 +58,7 @@ const Profile = (props) => {
                     aria-controls="panel1bh-content"
                     id="panel1bh-header"
                 >
-                    <Typography className={classes.heading}>Username</Typography>
+                    <Typography className={classes.heading}>Ім'я користувача</Typography>
                     <Typography className={classes.secondaryHeading}>{props.name}</Typography>
                 </ExpansionPanelSummary>
             </ExpansionPanel>
@@ -67,7 +67,7 @@ const Profile = (props) => {
                     expandIcon={<ExpandMoreIcon />}
                     aria-controls="panel2bh-content"
                     id="panel2bh-header">
-                    <Typography className={classes.heading}>Gender</Typography>
+                    <Typography className={classes.heading}>Стать</Typography>
                     <Typography className={classes.secondaryHeading}>{genders[props.gender]}</Typography>
                 </ExpansionPanelSummary>
                 <ExpansionPanelDetails>
@@ -82,7 +82,7 @@ const Profile = (props) => {
                     aria-controls="panel3bh-content"
                     id="panel3bh-header"
                 >
-                    <Typography className={classes.heading}>Date of birth</Typography>
+                    <Typography className={classes.heading}>Дата народження</Typography>
                     <Typography className={classes.secondaryHeading}>
                         <Moment format="D MMM YYYY" withTitle>{props.birthday}</Moment>
                     </Typography>

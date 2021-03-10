@@ -8,15 +8,15 @@ import './Header-profile.css';
 
 export default class HeaderProfile extends Component {
     render() {
-        //const { id, name, photoUrl } = this.props.user;
+        const { id, name, photoUrl } = this.props.store.user;
 
         return (
             <div className='header-profile-root'>
                 <div className='d-inline-block'>
-                    {/* {id && ( */}
+                    {id && (
                         <div className="d-flex flex-column align-items-center">
-                            <CustomAvatar size="big" /*name={this.props.user.name}*/ />
-                            {/* <h4>{name}</h4> */}
+                            <CustomAvatar size="big" photoUrl={photoUrl} name={name} />
+                            <h4>{name}</h4>
                             <div>
                                 <Link to={'/profile'}>
                                     <Tooltip title="Edit your profile" placement="bottom" TransitionComponent={Zoom}>
@@ -27,7 +27,7 @@ export default class HeaderProfile extends Component {
                                 </Link>
                             </div>
                         </div>
-                    {/* )} */}
+                    )}
                 </div>
             </div >
         );

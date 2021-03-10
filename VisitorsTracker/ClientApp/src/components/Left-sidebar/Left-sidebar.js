@@ -44,8 +44,12 @@ class LeftSidebar extends Component {
                     </button>
                 </div>
                 <div className={this.state._class + ' left-sidebar'}>
-                    <HeaderProfileWrapper />
-                    <Login />
+                    <div className="rounded-circle">
+                        Visitors Tracker
+                    </div>
+                    <HeaderProfileWrapper store={this.props.store} />
+                    {!this.props.store.user.id &&
+                        <Login store={this.props.store} />}
                     <nav>
                         <hr />
                         <ul className="list-unstyled">
@@ -54,7 +58,7 @@ class LeftSidebar extends Component {
                                 icon={'fa fa-home'}
                                 text={"Головна"}
                             />
-                            {/* {this.props.user.id && */}
+                            {this.props.store.user.id &&
                                 <>
                                     <NavItem
                                         to={'/profile'}
@@ -72,8 +76,8 @@ class LeftSidebar extends Component {
                                         text={"Розклад"}
                                     />
                                 </>
-                            {/* } */}
-                            {/* {this.props.user.role === "Admin" && */}
+                            }
+                            {this.props.store.user.role === "Admin" &&
                                 <>
                                     <NavItem
                                         to={'/'}
@@ -81,7 +85,7 @@ class LeftSidebar extends Component {
                                         text={"Адміністрування"}
                                     />
                                 </>
-                            {/* } */}
+                            }
                         </ul>
                     </nav>
                 </div>
