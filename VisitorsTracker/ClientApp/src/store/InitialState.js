@@ -12,7 +12,6 @@ const initialState = {
         photoUrl: null,
         token: null
     },
-
     login: {
         isLoginPending: false,
         isLoginSuccess: false,

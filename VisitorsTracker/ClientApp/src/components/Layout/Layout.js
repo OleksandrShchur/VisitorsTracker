@@ -9,8 +9,8 @@ export class Layout extends Component {
   render () {
     return (
       <div>
-        <LeftSidebar store={this.props.store}/>
-        <Container store={this.props.store}>
+        <LeftSidebar />
+        <Container >
           {this.props.children}
         </Container>
       </div>

@@ -5,10 +5,11 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Zoom from '@material-ui/core/Zoom';
 import CustomAvatar from '../Avatar/Avatar';
 import './Header-profile.css';
+import { connect } from 'react-redux';
 
-export default class HeaderProfile extends Component {
+class HeaderProfile extends Component {
     render() {
-        const { id, name, photoUrl } = this.props.store.user;
+        const { id, name, photoUrl } = this.props.user;
 
         return (
             <div className='header-profile-root'>
@@ -33,3 +34,12 @@ export default class HeaderProfile extends Component {
         );
     }
 }
+
+const mapStateToProps = (state) => ({
+    user: state.user
+});
+
+const mapDispatchToProps = (dispatch) => {
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(HeaderProfile);

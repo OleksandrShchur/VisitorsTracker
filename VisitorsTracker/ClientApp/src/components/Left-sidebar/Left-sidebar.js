@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 import HeaderProfileWrapper from '../Header-profile/index';
 import Login from '../Login/index';
@@ -47,9 +48,9 @@ class LeftSidebar extends Component {
                     <div className="rounded-circle">
                         Visitors Tracker
                     </div>
-                    <HeaderProfileWrapper store={this.props.store} />
-                    {!this.props.store.user.id &&
-                        <Login store={this.props.store} />}
+                    <HeaderProfileWrapper />
+                    {!this.props.user.id &&
+                        <Login />}
                     <nav>
                         <hr />
                         <ul className="list-unstyled">
@@ -58,7 +59,7 @@ class LeftSidebar extends Component {
                                 icon={'fa fa-home'}
                                 text={"Головна"}
                             />
-                            {this.props.store.user.id &&
+                            {this.props.user.id &&
                                 <>
                                     <NavItem
                                         to={'/profile'}
@@ -77,7 +78,7 @@ class LeftSidebar extends Component {
                                     />
                                 </>
                             }
-                            {this.props.store.user.role === "Admin" &&
+                            {this.props.user.role === "Admin" &&
                                 <>
                                     <NavItem
                                         to={'/'}
@@ -94,4 +95,11 @@ class LeftSidebar extends Component {
     }
 }
 
-export default LeftSidebar;
+const mapStateToProps = (state) => ({
+    user: state.user
+});
+
+const mapDispatchToProps = (dispatch) => {
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(LeftSidebar);

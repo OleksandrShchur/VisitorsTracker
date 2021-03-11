@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import Avatar from '@material-ui/core/Avatar';
+import { connect } from 'react-redux';
 
-export default class CustomAvatar extends Component {
+class CustomAvatar extends Component {
     render() {
         const  { photoUrl, name }  = this.props;
         
@@ -29,3 +30,12 @@ export default class CustomAvatar extends Component {
         );
     }
 }
+
+const mapStateToProps = (state) => ({
+    user: state.user
+});
+
+const mapDispatchToProps = (dispatch) => {
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(CustomAvatar);

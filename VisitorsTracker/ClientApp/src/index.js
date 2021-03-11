@@ -8,12 +8,13 @@ import configureStore from './store/ConfigureStore';
 import { setUser } from './actions/Login';
 import 'bootstrap/dist/css/bootstrap.css';
 import initState from './store/InitialState';
+import { ConnectedRouter } from 'react-router-redux';
 
 const baseUrl = document.getElementsByTagName('base')[0].getAttribute('href');
 const history = createBrowserHistory({ basename: baseUrl });
 
-const initialState = window.initialReduxState;
-const store = configureStore(history, initialState);
+//const initialState = window.initialReduxState; does not work for now
+const store = configureStore(history, initState);
 
 async function AuthUser(token) {
   if (!token)
@@ -46,9 +47,9 @@ const rootElement = document.getElementById('root');
 
 ReactDOM.render(
   <Provider store={store}>
-    <App
-      baseUrl={baseUrl}
-      store={initState} />
+      <App
+        baseUrl={baseUrl}
+      />
   </ Provider>,
   rootElement);
 
