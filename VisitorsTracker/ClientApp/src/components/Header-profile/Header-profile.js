@@ -5,18 +5,19 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Zoom from '@material-ui/core/Zoom';
 import CustomAvatar from '../Avatar/Avatar';
 import './Header-profile.css';
+import { connect } from 'react-redux';
 
-export default class HeaderProfile extends Component {
+class HeaderProfile extends Component {
     render() {
-        //const { id, name, photoUrl } = this.props.user;
+        const { id, name, photoUrl } = this.props.user;
 
         return (
             <div className='header-profile-root'>
                 <div className='d-inline-block'>
-                    {/* {id && ( */}
+                    {id && (
                         <div className="d-flex flex-column align-items-center">
-                            <CustomAvatar size="big" /*name={this.props.user.name}*/ />
-                            {/* <h4>{name}</h4> */}
+                            <CustomAvatar size="big" photoUrl={photoUrl} name={name} />
+                            <h4>{name}</h4>
                             <div>
                                 <Link to={'/profile'}>
                                     <Tooltip title="Edit your profile" placement="bottom" TransitionComponent={Zoom}>
@@ -27,9 +28,18 @@ export default class HeaderProfile extends Component {
                                 </Link>
                             </div>
                         </div>
-                    {/* )} */}
+                    )}
                 </div>
             </div >
         );
     }
 }
+
+const mapStateToProps = (state) => ({
+    user: state.user
+});
+
+const mapDispatchToProps = (dispatch) => {
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(HeaderProfile);

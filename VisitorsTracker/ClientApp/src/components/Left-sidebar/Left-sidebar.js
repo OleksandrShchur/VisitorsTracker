@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 import HeaderProfileWrapper from '../Header-profile/index';
 import Login from '../Login/index';
@@ -44,8 +45,12 @@ class LeftSidebar extends Component {
                     </button>
                 </div>
                 <div className={this.state._class + ' left-sidebar'}>
+                    <div className="text-uppercase">
+                        Visitors Tracker
+                    </div>
                     <HeaderProfileWrapper />
-                    <Login />
+                    {!this.props.user.id &&
+                        <Login />}
                     <nav>
                         <hr />
                         <ul className="list-unstyled">
@@ -54,10 +59,10 @@ class LeftSidebar extends Component {
                                 icon={'fa fa-home'}
                                 text={"Головна"}
                             />
-                            {/* {this.props.user.id && */}
+                            {this.props.user.id &&
                                 <>
                                     <NavItem
-                                        to={'/'}
+                                        to={'/profile'}
                                         icon={'fa fa-user'}
                                         text={"Профіль"}
                                     />
@@ -72,8 +77,8 @@ class LeftSidebar extends Component {
                                         text={"Розклад"}
                                     />
                                 </>
-                            {/* } */}
-                            {/* {this.props.user.role === "Admin" && */}
+                            }
+                            {this.props.user.role === "Admin" &&
                                 <>
                                     <NavItem
                                         to={'/'}
@@ -81,7 +86,7 @@ class LeftSidebar extends Component {
                                         text={"Адміністрування"}
                                     />
                                 </>
-                            {/* } */}
+                            }
                         </ul>
                     </nav>
                 </div>
@@ -90,4 +95,11 @@ class LeftSidebar extends Component {
     }
 }
 
-export default LeftSidebar;
+const mapStateToProps = (state) => ({
+    user: state.user
+});
+
+const mapDispatchToProps = (dispatch) => {
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(LeftSidebar);

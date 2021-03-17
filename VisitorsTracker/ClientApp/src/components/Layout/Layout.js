@@ -1,16 +1,16 @@
 import React, { Component } from 'react';
 import { Container } from 'reactstrap';
-import { NavMenu } from '../NavMenu/NavMenu';
 import LeftSidebar from '../Left-sidebar/index';
 
-export class Layout extends Component {
-  static displayName = Layout.name;
+import './Layout.css';
+import './ColorLib.css';
 
+export class Layout extends Component {
   render () {
     return (
       <div>
         <LeftSidebar />
-        <Container>
+        <Container >
           {this.props.children}
         </Container>
       </div>

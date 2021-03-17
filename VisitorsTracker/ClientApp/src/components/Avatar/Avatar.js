@@ -1,12 +1,10 @@
 import React, { Component } from "react";
 import Avatar from '@material-ui/core/Avatar';
+import { connect } from 'react-redux';
 
-export default class CustomAvatar extends Component {
+class CustomAvatar extends Component {
     render() {
-
-        //const  { photoUrl, name }  = this.props;
-        let photoUrl = "qwerty";
-        let name = "Visitors Tracker";
+        const  { photoUrl, name }  = this.props;
         
         let size = `${this.props.size}Avatar`;
         
@@ -17,14 +15,14 @@ export default class CustomAvatar extends Component {
                 : '';
 
         return (
-            <>
+            <>  
                 {photoUrl
                     ? <Avatar
-                        //src={icon}
+                        src={photoUrl}
                         className={size}
                     />
                     : <Avatar className={size}>
-                        <div className={`text-light`}>
+                        <div className={`${firstLetterSize} text-light`}>
                             {name.charAt(0).toUpperCase()}
                         </div>
                     </Avatar>}
@@ -32,3 +30,12 @@ export default class CustomAvatar extends Component {
         );
     }
 }
+
+const mapStateToProps = (state) => ({
+    user: state.user
+});
+
+const mapDispatchToProps = (dispatch) => {
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(CustomAvatar);

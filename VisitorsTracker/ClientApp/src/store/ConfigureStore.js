@@ -1,7 +1,7 @@
 import { applyMiddleware, combineReducers, compose, createStore } from 'redux';
 import thunk from 'redux-thunk';
 import { routerMiddleware } from 'react-router-redux';
-import rootReducers from '../reducers/root';
+import rootReducers from '../reducers/Root';
 
 export default function configureStore(history, initialState) {
 
@@ -15,7 +15,7 @@ export default function configureStore(history, initialState) {
   const isDevelopment = process.env.NODE_ENV === 'development';
   if (isDevelopment && typeof window !== 'undefined' && window.devToolsExtension) {
     enhancers.push(window.devToolsExtension());
-    }
+  }
 
   const rootReducer = combineReducers({
     ...rootReducers

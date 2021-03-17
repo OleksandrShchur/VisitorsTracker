@@ -1,17 +1,56 @@
-import 'bootstrap/dist/css/bootstrap.css';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import { createBrowserHistory } from 'history';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
+import configureStore from './store/ConfigureStore';
+import { setUser } from './actions/Login';
+import 'bootstrap/dist/css/bootstrap.css';
+import initState from './store/InitialState';
+import { ConnectedRouter } from 'react-router-redux';
 
 const baseUrl = document.getElementsByTagName('base')[0].getAttribute('href');
+const history = createBrowserHistory({ basename: baseUrl });
+
+//const initialState = window.initialReduxState; does not work for now
+const store = configureStore(history, initState);
+
+async function AuthUser(token) {
+  if (!token)
+    return;
+
+  const res = await fetch('api/Authentication/login_token', {
+    method: 'post',
+    headers: new Headers({
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ' + token
+    }),
+  });
+
+  if (res.ok) {
+    const user = await res.json();
+
+    store.dispatch(setUser(user));
+  } else {
+    localStorage.clear();
+  }
+}
+
+const token = localStorage.getItem('token');
+
+if (token) {
+  AuthUser(token);
+}
+
 const rootElement = document.getElementById('root');
 
 ReactDOM.render(
-  <BrowserRouter basename={baseUrl}>
-    <App />
-  </BrowserRouter>,
+  <Provider store={store}>
+      <App
+        baseUrl={baseUrl}
+      />
+  </ Provider>,
   rootElement);
 
 registerServiceWorker();

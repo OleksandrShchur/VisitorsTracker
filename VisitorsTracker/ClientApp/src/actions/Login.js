@@ -10,7 +10,7 @@ const api_serv = new AuthenticationService();
 export default function loginGoogle(tokenId, email, name, imageUrl) {
     return dispatch => {
         dispatch(setLoginPending(true));
-
+        
         const res = api_serv.setGoogleLogin({
         TokenId: tokenId,
         Email: email,

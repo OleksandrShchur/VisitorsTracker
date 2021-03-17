@@ -59,11 +59,6 @@ namespace VisitorsTracker.Core.Services
             }
 
             await _context.SaveChangesAsync();
-            /*userDto.Id = result.Id;
-            if (!userDto.EmailConfirmed)
-            {
-                await _mediator.Publish(new RegisterVerificationMessage(userDto));
-            }*/
         }
 
         public async Task Update(UserDTO userDTO)
@@ -201,19 +196,14 @@ namespace VisitorsTracker.Core.Services
             }
 
             string path = "/Img/" + uploadedFile.FileName;
-            // сохраняем файл в папку Files в каталоге wwwroot
+            // save file in Img folder in wwwroot directory
             using (var fileStream = new FileStream(_appEnvironment.WebRootPath + path, FileMode.Create))
             {
                 await uploadedFile.CopyToAsync(fileStream);
             }
             user.Photo = path;
 
-            //_context.Files.Add(path);
-            /*FileModel file = new FileModel { Name = uploadedFile.FileName, Path = path };
-            _context.Files.Add(file);*/
-            _context.SaveChanges();
-
-            //Insert(photo);
+            Update(user);
             await _context.SaveChangesAsync();
 
             return path;
@@ -264,6 +254,6 @@ namespace VisitorsTracker.Core.Services
             user.Photo = string.Empty;
         }
 
-        private static bool IsValidImage(IFormFile file) => file != null;// && file.IsImage();
+        private static bool IsValidImage(IFormFile file) => file != null;
     }
 }

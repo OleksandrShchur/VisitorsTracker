@@ -12,8 +12,6 @@ export default class AuthenticationService {
     }
 
     setGoogleLogin = async (data) => {
-        console.log("setGoogleLogin");
-        console.log(data);
         const res = await baseService.setResource('Authentication/GoogleLogin', data);
         return !res.ok
             ? { error: await res.text() }

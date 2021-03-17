@@ -16,7 +16,7 @@ body {
 }
 
 .left-sidebar-opened{
-    width: 15em;
+    width: 13em;
 }
 
 .left-sidebar-closed{
@@ -33,7 +33,7 @@ body {
 
 #open-close-zone.left-sidebar-opened {
     width: 100%;
-    padding-left: 15em;
+    padding-left: 13em;
     background-color: rgba(0, 0, 0, 0.75)
 }
 
@@ -85,7 +85,7 @@ body {
     }
 
     .left-sidebar {
-        width: 15em !important;
+        width: 13em !important;
     }
 
     #main {
