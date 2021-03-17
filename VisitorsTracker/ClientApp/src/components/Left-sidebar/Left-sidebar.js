@@ -45,7 +45,7 @@ class LeftSidebar extends Component {
                     </button>
                 </div>
                 <div className={this.state._class + ' left-sidebar'}>
-                    <div className="rounded-circle">
+                    <div className="text-uppercase">
                         Visitors Tracker
                     </div>
                     <HeaderProfileWrapper />
