@@ -115,7 +115,7 @@ namespace VisitorsTracker.Core.Services
 
             try
             {
-                user.Photo = await AddPhoto(avatar, user);
+                user.Photo = await AddPhoto(avatar);
                 Update(user); // delete, if Update have already done in Photo service
                 await _context.SaveChangesAsync();
             }
@@ -188,44 +188,28 @@ namespace VisitorsTracker.Core.Services
             return _mapper.Map<UserDTO>(user);
         }
 
-        public async Task<string> AddPhoto(IFormFile uploadedFile, User user) // todo
+        public async Task<string> AddPhoto(IFormFile uploadedFile)
         {
             if (!IsValidImage(uploadedFile))
             {
                 throw new ArgumentException();
             }
 
-            string path = "/Img/" + uploadedFile.FileName;
-            // save file in Img folder in wwwroot directory
-            using (var fileStream = new FileStream(_appEnvironment.WebRootPath + path, FileMode.Create))
-            {
-                await uploadedFile.CopyToAsync(fileStream);
-            }
-            user.Photo = path;
+            string webRoot = _appEnvironment.WebRootPath;
+            string pathWithFolderName = Path.Combine(webRoot, "Img", uploadedFile.FileName);
+            var stream = new FileStream(pathWithFolderName, FileMode.Create);
 
-            Update(user);
-            await _context.SaveChangesAsync();
+            await uploadedFile.CopyToAsync(stream);
 
-            return path;
+            return pathWithFolderName;
         }
 
-        public async Task<string> AddPhotoByURL(string url, User user) // to do
+        public async Task<string> AddPhotoByURL(string url) // to do
         {
             if (!await IsImageUrl(url))
             {
                 throw new ArgumentException();
             }
-
-            Uri uri = new Uri(url);
-            byte[] imgData = _client.Value.GetByteArrayAsync(uri).Result;
-            /*var photo = new Photo
-            {
-                Thumb = imgData,
-                Img = imgData,
-            };
-
-            Insert(photo);
-            await _context.SaveChangesAsync();*/
 
             return url;
         }
