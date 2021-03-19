@@ -1,6 +1,6 @@
 ﻿namespace VisitorsTracker.Db.Enums
 {
-    public enum DayOfWeek : byte
+    public enum DayWeek : byte
     {
         Monday,
         Tuesday,

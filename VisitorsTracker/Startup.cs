@@ -99,7 +99,6 @@ namespace VisitorsTracker
             services.AddDbContext<AppDbContext>(options =>
             {
                 options.UseSqlServer(connection);
-                options.EnableSensitiveDataLogging();
             });
                 
 

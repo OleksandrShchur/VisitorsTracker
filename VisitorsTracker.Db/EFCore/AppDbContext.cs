@@ -18,6 +18,12 @@ namespace VisitorsTracker.Db.EFCore
 
         public DbSet<Group> Groups { get; set; }
 
+        public DbSet<Classes> Classes { get; set; }
+
+        public DbSet<Subjects> Subjects { get; set; }
+
+        public DbSet<Visiting> Visitings { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
