@@ -1,28 +1,33 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
+using VisitorsTracker.Db.Entities;
 using VisitorsTracker.Db.Enums;
 
-namespace VisitorsTracker.Db.Entities
+namespace VisitorsTracker.Core.DTOs
 {
-    public class Classes : BaseEntity
+    public class ClassesDTO
     {
+        public Guid Id { get; set; }
+
+        public Guid ProfessorId { get; set; }
+
         public Guid GroupId { get; set; }
 
-        public virtual IEnumerable<Group> Groups { get; set; }
+        public virtual Group Group { get; set; }
 
-        public Guid UserId { get; set; }
+        public virtual User Professor { get; set; }
 
         public Guid SubjectId { get; set; }
 
         public virtual Subjects Subjects { get; set; }
+
+        public TypeOfClasses Type { get; set; }
 
         public Frequency Frequency { get; set; }
 
         public NumberOfClasses Number { get; set; }
 
         public DayWeek DayWeek { get; set; }
-
-        public TypeOfClasses Type { get; set; }
-
     }
 }

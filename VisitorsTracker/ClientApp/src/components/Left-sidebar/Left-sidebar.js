@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 
 import HeaderProfileWrapper from '../Header-profile/index';
 import Login from '../Login/index';
+import image from '../../Images/chnuLong.png';
 
 import './Left-sidebar.css';
 
@@ -45,9 +46,7 @@ class LeftSidebar extends Component {
                     </button>
                 </div>
                 <div className={this.state._class + ' left-sidebar'}>
-                    <div className="text-uppercase">
-                        Visitors Tracker
-                    </div>
+                    {/* <img src={image} className="center"></img> fix it a little bit later*/}
                     <HeaderProfileWrapper />
                     {!this.props.user.id &&
                         <Login />}
@@ -72,12 +71,17 @@ class LeftSidebar extends Component {
                                         text={"Пошук користувачів"}
                                     />
                                     <NavItem
-                                        to={'/'}
+                                        to={'/schedule'}
                                         icon={'fa fa-users'}
                                         text={"Розклад"}
                                     />
                                 </>
                             }
+                            <NavItem
+                                to={'/aboutus'}
+                                icon={'fa fa-home'}
+                                text={"Про нас"}
+                            />
                             {this.props.user.role === "Admin" &&
                                 <>
                                     <NavItem

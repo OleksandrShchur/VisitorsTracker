@@ -6,6 +6,9 @@ import { Layout } from './components/Layout/Layout';
 import { Home } from './components/Home/Home';
 import { AboutUs } from './components/AboutUs/AboutUs';
 import Profile from './components/Profile/index';
+import Schedule from './components/Schedule/index';
+import Class from './components/Class/index';
+import UserProfile from './components/Profile/UserProfile';
 
 import './custom.css'
 
@@ -17,6 +20,9 @@ export default class App extends Component {
           <Route exact path='/' component={Home} />
           <Route path='/aboutUs' component={AboutUs} />
           <Route path="/profile" component={Profile} />
+          <Route path="/schedule" component={Schedule} />
+          <Route path="/class" component={Class} />
+          <Route path="/userProfile" component={UserProfile} />
         </Layout>
       </BrowserRouter>
 

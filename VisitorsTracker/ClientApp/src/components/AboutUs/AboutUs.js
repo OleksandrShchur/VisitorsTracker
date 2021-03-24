@@ -11,7 +11,8 @@ export class AboutUs extends Component {
           ведення журналу
         </p>
         <p>
-          Розробка та підтримка здійснюється студентом 3 курсу. Зі всіма питаннями звертатися за поштою <link href="shchur.oleksandr@chnu.edu.ua" />.
+          Розробка та підтримка здійснюється студентом 3 курсу. Зі всіма питаннями звертатися за поштою  
+          <a href="shchur.oleksandr@chnu.edu.ua"> shchur.oleksandr@chnu.edu.ua</a>.
         </p>
       </div>
     );
