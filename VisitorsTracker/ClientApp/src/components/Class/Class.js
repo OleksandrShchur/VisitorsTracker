@@ -1,380 +1,114 @@
-/*import React, { Component } from "react";
-import { Link } from 'react-router-dom';
+import React from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+import Paper from '@material-ui/core/Paper';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TablePagination from '@material-ui/core/TablePagination';
+import TableRow from '@material-ui/core/TableRow';
+import Box from '@material-ui/core/Box';
 
-class Class extends Component {
-    constructor(props) {
-        super(props) //since we are extending class Table so we have to use super in order to override Component class constructor
-        this.state = { //state is by default an object
-            students: [
-                { id: 1, name: 'Мельничук Станіслав', age: 21, email: 'wasif@email.com' },
-                { id: 2, name: 'Орелецький Валентин', age: 19, email: 'ali@email.com' },
-                { id: 3, name: 'Продан Анатолій', age: 16, email: 'saad@email.com' },
-                { id: 4, name: 'Роєк Анастасія', age: 25, email: 'asad@email.com' },
-                { id: 5, name: 'Стрільчук Вадим', age: 25, email: 'asad@email.com' },
-                { id: 6, name: 'Романовський Михайло', age: 25, email: 'asad@email.com' },
-                { id: 7, name: 'Щур Олександр', age: 25, email: 'asad@email.com' },
-                { id: 8, name: 'Чебан Владислав', age: 25, email: 'asad@email.com' },
-                { id: 9, name: 'Тихович Михайло', age: 25, email: 'asad@email.com' },
-                { id: 10, name: 'Тарица Олександр', age: 25, email: 'asad@email.com' },
-                { id: 11, name: 'Сілімір Руслан', age: 25, email: 'asad@email.com' },
-            ]
-        }
-    }
+const columns = [
+    { id: 'id', label: 'Номер', minWidth: 17 },
+    { id: 'name', label: 'ПІБ', minWidth: 300 },
+    { id: 'email', label: 'Пошта', minWidth: 250 },
+];
 
-    renderTableData() {
-        return this.state.students.map((student, index) => {
-            const { id, name, age, email } = student //destructuring
-            return (
-                <tr key={id}>
-                    <td>{id}</td>
-                    <Link to="/userProfile"><td>{name}</td></Link>
-                    <td>{age}</td>
-                    <td>{email}</td>
-                </tr>
-            )
-        })
-    }
-    renderTableHeader() {
-        let header = Object.keys(this.state.students[0])
-        return header.map((key, index) => {
-            return <th key={index}>{key.toUpperCase()}</th>
-        })
-    }
-
-    render() {
-        return (
-            <div>
-                <h1 id='title'>Список студентів</h1>
-                <table id='students'>
-                    <tbody>
-                        <tr>{this.renderTableHeader()}</tr>
-                        {this.renderTableData()}
-                    </tbody>
-                </table>
-            </div>
-        )
-    }
+function createData(id, name, email) {
+    return { id, name, email };
 }
 
-export default Class;*/
+const rows = [
+    createData(1, 'Мельничук Станіслав', 'wasif@email.com'),
+    createData(2, 'Орелецький Валентин', 'ali@email.com'),
+    createData(3, 'Продан Анатолій', 'saad@email.com'),
+    createData(4, 'Роєк Анастасія', 'asad@email.com'),
+    createData(5, 'Стрільчук Вадим', 'asad@email.com'),
+    createData(6, 'Романовський Михайло', 'asad@email.com'),
+    createData(7, 'Щур Олександр', 'saad@email.com'),
+    createData(8, 'Чебан Владислав', 'ali@email.com'),
+    createData(9, 'Тихович Михайло', 'wasif@email.com'),
+    createData(10, 'Тарица Олександр', 'wasif@email.com'),
+    createData(11, 'Сілімір Руслан', 'wasif@email.com'),
+    createData(12, 'Беженар Олександр', 'wasif@email.com'),
+    createData(13, 'Буйновський Віктор', 'wasif@email.com'),
+];
 
-import React, { useState } from 'react';
-import {
-    SortingState, EditingState, PagingState, SummaryState,
-    IntegratedPaging, IntegratedSorting, IntegratedSummary,
-} from '@devexpress/dx-react-grid';
-import {
-    Grid,
-    Table, TableHeaderRow, TableEditRow, TableEditColumn,
-    PagingPanel, DragDropProvider, TableColumnReordering,
-    TableFixedColumns, TableSummaryRow,
-} from '@devexpress/dx-react-grid-material-ui';
-import Paper from '@material-ui/core/Paper';
-import Button from '@material-ui/core/Button';
-import IconButton from '@material-ui/core/IconButton';
-import Input from '@material-ui/core/Input';
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
-import TableCell from '@material-ui/core/TableCell';
-
-import DeleteIcon from '@material-ui/icons/Delete';
-import EditIcon from '@material-ui/icons/Edit';
-import SaveIcon from '@material-ui/icons/Save';
-import CancelIcon from '@material-ui/icons/Cancel';
-import { withStyles } from '@material-ui/core/styles';
-
-// delete 
-import { ProgressBarCell } from '../ThemeSources/progress-bar-cell';
-import { HighlightedCell } from '../ThemeSources/highlighted-cell';
-import { CurrencyTypeProvider } from '../ThemeSources/currency-type-provider';
-import { PercentTypeProvider } from '../ThemeSources/percent-type-provider';
-
-import {
-  generateRows,
-  globalSalesValues,
-} from './demo-data/generator';
-// end of delete
-
-
-const styles = theme => ({
-    lookupEditCell: {
-        padding: theme.spacing(1),
-    },
-    dialog: {
-        width: 'calc(100% - 16px)',
-    },
-    inputRoot: {
+const useStyles = makeStyles({
+    root: {
         width: '100%',
     },
-    selectMenu: {
-        position: 'absolute !important',
+    container: {
+        maxHeight: 740,
     },
 });
 
-const AddButton = ({ onExecute }) => (
-    <div style={{ textAlign: 'center' }}>
-        <Button
-            color="primary"
-            onClick={onExecute}
-            title="Create new row"
-        >
-            New
-      </Button>
-    </div>
-);
+export default function StickyHeadTable() {
+    const classes = useStyles();
+    const [page, setPage] = React.useState(0);
+    const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
-const EditButton = ({ onExecute }) => (
-    <IconButton onClick={onExecute} title="Edit row">
-        <EditIcon />
-    </IconButton>
-);
-
-const DeleteButton = ({ onExecute }) => (
-    <IconButton
-        onClick={() => {
-            // eslint-disable-next-line
-            if (window.confirm('Are you sure you want to delete this row?')) {
-                onExecute();
-            }
-        }}
-        title="Delete row"
-    >
-        <DeleteIcon />
-    </IconButton>
-);
-
-const CommitButton = ({ onExecute }) => (
-    <IconButton onClick={onExecute} title="Save changes">
-        <SaveIcon />
-    </IconButton>
-);
-
-const CancelButton = ({ onExecute }) => (
-    <IconButton color="secondary" onClick={onExecute} title="Cancel changes">
-        <CancelIcon />
-    </IconButton>
-);
-
-const commandComponents = {
-    add: AddButton,
-    edit: EditButton,
-    delete: DeleteButton,
-    commit: CommitButton,
-    cancel: CancelButton,
-};
-
-const Command = ({ id, onExecute }) => {
-    const CommandButton = commandComponents[id];
-    return (
-        <CommandButton
-            onExecute={onExecute}
-        />
-    );
-};
-
-const availableValues = {
-    product: globalSalesValues.product,
-    region: globalSalesValues.region,
-    customer: globalSalesValues.customer,
-};
-
-const LookupEditCellBase = ({
-    availableColumnValues, value, onValueChange, classes,
-}) => (
-    <TableCell
-        className={classes.lookupEditCell}
-    >
-        <Select
-            value={value}
-            onChange={event => onValueChange(event.target.value)}
-            MenuProps={{
-                className: classes.selectMenu,
-            }}
-            input={(
-                <Input
-                    classes={{ root: classes.inputRoot }}
-                />
-            )}
-        >
-            {availableColumnValues.map(item => (
-                <MenuItem key={item} value={item}>
-                    {item}
-                </MenuItem>
-            ))}
-        </Select>
-    </TableCell>
-);
-
-export const LookupEditCell = withStyles(styles, { name: 'ControlledModeDemo' })(LookupEditCellBase);
-
-const Cell = (props) => {
-    const { column } = props;
-    if (column.name === 'discount') {
-        return <ProgressBarCell {...props} />;
-    }
-    if (column.name === 'amount') {
-        return <HighlightedCell {...props} />;
-    }
-    return <Table.Cell {...props} />;
-};
-
-const EditCell = (props) => {
-    const { column } = props;
-    const availableColumnValues = availableValues[column.name];
-    if (availableColumnValues) {
-        return <LookupEditCell {...props} availableColumnValues={availableColumnValues} />;
-    }
-    return <TableEditRow.Cell {...props} />;
-};
-
-const getRowId = row => row.id;
-
-export default () => {
-    const [columns] = useState([
-        { name: 'product', title: 'Product' },
-        { name: 'region', title: 'Region' },
-        { name: 'amount', title: 'Sale Amount' },
-        { name: 'discount', title: 'Discount' },
-        { name: 'saleDate', title: 'Sale Date' },
-        { name: 'customer', title: 'Customer' },
-    ]);
-    const [rows, setRows] = useState(generateRows({
-        columnValues: { id: ({ index }) => index, ...globalSalesValues },
-        length: 12,
-    }));
-    const [tableColumnExtensions] = useState([
-        { columnName: 'product', width: 200 },
-        { columnName: 'region', width: 180 },
-        { columnName: 'amount', width: 180, align: 'right' },
-        { columnName: 'discount', width: 180 },
-        { columnName: 'saleDate', width: 180 },
-        { columnName: 'customer', width: 200 },
-    ]);
-    const [sorting, getSorting] = useState([]);
-    const [editingRowIds, getEditingRowIds] = useState([]);
-    const [addedRows, setAddedRows] = useState([]);
-    const [rowChanges, setRowChanges] = useState({});
-    const [currentPage, setCurrentPage] = useState(0);
-    const [pageSize, setPageSize] = useState(0);
-    const [pageSizes] = useState([5, 10, 0]);
-    const [columnOrder, setColumnOrder] = useState(['product', 'region', 'amount', 'discount', 'saleDate', 'customer']);
-    const [currencyColumns] = useState(['amount']);
-    const [percentColumns] = useState(['discount']);
-    const [leftFixedColumns] = useState([TableEditColumn.COLUMN_TYPE]);
-    const [totalSummaryItems] = useState([
-        { columnName: 'discount', type: 'avg' },
-        { columnName: 'amount', type: 'sum' },
-    ]);
-
-    const changeAddedRows = value => setAddedRows(
-        value.map(row => (Object.keys(row).length ? row : {
-            amount: 0,
-            discount: 0,
-            saleDate: new Date().toISOString().split('T')[0],
-            product: availableValues.product[0],
-            region: availableValues.region[0],
-            customer: availableValues.customer[0],
-        })),
-    );
-
-    const deleteRows = (deletedIds) => {
-        const rowsForDelete = rows.slice();
-        deletedIds.forEach((rowId) => {
-            const index = rowsForDelete.findIndex(row => row.id === rowId);
-            if (index > -1) {
-                rowsForDelete.splice(index, 1);
-            }
-        });
-        return rowsForDelete;
+    const handleChangePage = (event, newPage) => {
+        setPage(newPage);
     };
 
-    const commitChanges = ({ added, changed, deleted }) => {
-        let changedRows;
-        if (added) {
-            const startingAddedId = rows.length > 0 ? rows[rows.length - 1].id + 1 : 0;
-            changedRows = [
-                ...rows,
-                ...added.map((row, index) => ({
-                    id: startingAddedId + index,
-                    ...row,
-                })),
-            ];
-        }
-        if (changed) {
-            changedRows = rows.map(row => (changed[row.id] ? { ...row, ...changed[row.id] } : row));
-        }
-        if (deleted) {
-            changedRows = deleteRows(deleted);
-        }
-        setRows(changedRows);
+    const handleChangeRowsPerPage = (event) => {
+        setRowsPerPage(+event.target.value);
+        setPage(0);
     };
 
     return (
-        <Paper>
-            <Grid
-                rows={rows}
-                columns={columns}
-                getRowId={getRowId}
+        <Paper className={classes.root}>
+            <Box textAlign="center"
+                m={1}
+                fontSize={30}
             >
-                <SortingState
-                    sorting={sorting}
-                    onSortingChange={getSorting}
-                />
-                <PagingState
-                    currentPage={currentPage}
-                    onCurrentPageChange={setCurrentPage}
-                    pageSize={pageSize}
-                    onPageSizeChange={setPageSize}
-                />
-                <EditingState
-                    editingRowIds={editingRowIds}
-                    onEditingRowIdsChange={getEditingRowIds}
-                    rowChanges={rowChanges}
-                    onRowChangesChange={setRowChanges}
-                    addedRows={addedRows}
-                    onAddedRowsChange={changeAddedRows}
-                    onCommitChanges={commitChanges}
-                />
-                <SummaryState
-                    totalItems={totalSummaryItems}
-                />
-
-                <IntegratedSorting />
-                <IntegratedPaging />
-                <IntegratedSummary />
-
-                <CurrencyTypeProvider for={currencyColumns} />
-                <PercentTypeProvider for={percentColumns} />
-
-                <DragDropProvider />
-
-                <Table
-                    columnExtensions={tableColumnExtensions}
-                    cellComponent={Cell}
-                />
-                <TableColumnReordering
-                    order={columnOrder}
-                    onOrderChange={setColumnOrder}
-                />
-                <TableHeaderRow showSortingControls />
-                <TableEditRow
-                    cellComponent={EditCell}
-                />
-                <TableEditColumn
-                    width={170}
-                    showAddCommand={!addedRows.length}
-                    showEditCommand
-                    showDeleteCommand
-                    commandComponent={Command}
-                />
-                <TableSummaryRow />
-                <TableFixedColumns
-                    leftColumns={leftFixedColumns}
-                />
-                <PagingPanel
-                    pageSizes={pageSizes}
-                />
-            </Grid>
+                Список студентів групи
+            </Box>
+            <TableContainer className={classes.container}>
+                <Table stickyHeader aria-label="sticky table">
+                    <TableHead>
+                        <TableRow>
+                            {columns.map((column) => (
+                                <TableCell
+                                    key={column.id}
+                                    style={{ minWidth: column.minWidth }}
+                                >
+                                    {column.label}
+                                </TableCell>
+                            ))}
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+                            return (
+                                <TableRow hover role="checkbox" tabIndex={-1}>
+                                    {columns.map((column) => {
+                                        const value = row[column.id];
+                                        return (
+                                            <TableCell key={column.id}>
+                                                {column.format && typeof value === 'number' ? column.format(value) : value}
+                                            </TableCell>
+                                        );
+                                    })}
+                                </TableRow>
+                            );
+                        })}
+                    </TableBody>
+                </Table>
+            </TableContainer>
+            <TablePagination
+                rowsPerPageOptions={[10, 25, 100]}
+                component="div"
+                count={rows.length}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                onChangePage={handleChangePage}
+                onChangeRowsPerPage={handleChangeRowsPerPage}
+                labelRowsPerPage="Записів на сторінці:"
+            />
         </Paper>
     );
-};
+}
