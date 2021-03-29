@@ -21,9 +21,7 @@ namespace VisitorsTracker.Core.IServices
 
         UserDTO GetByEmail(string email);
 
-        ProfileDTO GetProfileById(Guid id, Guid fromId);
-
-        //IEnumerable<UserDTO> Get(UsersFilterViewModel model, out int count, Guid id); // to do
+        UserProfileDTO GetProfileById(Guid id, Guid fromId);
 
         IEnumerable<UserDTO> GetUsersByRole(string role);
 
@@ -33,6 +31,6 @@ namespace VisitorsTracker.Core.IServices
 
         Task<string> AddPhotoByURL(string url, User user);
 
-        Task Delete(User id);
+        Task DeleteImage(User id);
     }
 }

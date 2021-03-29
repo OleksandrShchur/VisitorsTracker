@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using VisitorsTracker.Core.DTOs;
 using VisitorsTracker.Core.Exceptions;
@@ -110,14 +111,12 @@ namespace VisitorsTracker.Core.Services
 
             if (user.Photo != null)
             {
-               await Delete(user);
+               await DeleteImage(user);
             }
 
             try
             {
                 user.Photo = await AddPhoto(avatar, user);
-                Update(user); // delete, if Update have already done in Photo service
-                await _context.SaveChangesAsync();
             }
             catch (ArgumentException)
             {
@@ -147,25 +146,12 @@ namespace VisitorsTracker.Core.Services
             return user;
         }
 
-        public ProfileDTO GetProfileById(Guid id, Guid fromId)
+        public UserProfileDTO GetProfileById(Guid id, Guid fromId)
         {
-            var user = _mapper.Map<UserDTO, ProfileDTO>(GetById(id));
-
-            /*var rel = _context.Relationships
-                .FirstOrDefault(x => x.UserFromId == fromId && x.UserToId == id);
-            user.Attitude = (rel != null)
-                ? (byte)rel.Attitude
-                : (byte)Attitude.None;
-
-            user.Rating = GetRating(user.Id);*/
+            var user = _mapper.Map<UserDTO, UserProfileDTO>(GetById(id));
 
             return user;
         }
-
-        /*public IEnumerable<UserDTO> Get(UsersFilterViewModel model, out int count, Guid id)
-        {
-
-        }*/ // to do
 
         public IEnumerable<UserDTO> GetUsersByRole(string role)
         {
@@ -188,69 +174,51 @@ namespace VisitorsTracker.Core.Services
             return _mapper.Map<UserDTO>(user);
         }
 
-        public async Task<string> AddPhoto(IFormFile uploadedFile, User user) // todo
+        public async Task<string> AddPhoto(IFormFile uploadedFile, User user)
         {
             if (!IsValidImage(uploadedFile))
             {
                 throw new ArgumentException();
             }
 
-            string path = "/Img/" + uploadedFile.FileName;
+            if (user == null)
+            {
+                throw new VisitorsTrackerException("User is equal null");
+            }
+
+            user.Photo = $"/Img/{uploadedFile.FileName}";
+
             // save file in Img folder in wwwroot directory
-            using (var fileStream = new FileStream(_appEnvironment.WebRootPath + path, FileMode.Create))
+            using (var fileStream = new FileStream($"{_appEnvironment.WebRootPath}{user.Photo}", FileMode.Create))
             {
                 await uploadedFile.CopyToAsync(fileStream);
             }
-            user.Photo = path;
 
             Update(user);
             await _context.SaveChangesAsync();
 
-            return path;
+            return user.Photo;
         }
 
         public async Task<string> AddPhotoByURL(string url, User user) // to do
         {
-            if (!await IsImageUrl(url))
+            if (!IsImageUrl(url))
             {
                 throw new ArgumentException();
             }
 
-            Uri uri = new Uri(url);
-            byte[] imgData = _client.Value.GetByteArrayAsync(uri).Result;
-            /*var photo = new Photo
-            {
-                Thumb = imgData,
-                Img = imgData,
-            };
-
-            Insert(photo);
-            await _context.SaveChangesAsync();*/
-
             return url;
         }
 
-        private async Task<bool> IsImageUrl(string url)
+        private bool IsImageUrl(string url)
         {
-            try
-            {
-                HttpResponseMessage result = await _client.Value.GetAsync(url);
-                return result.IsSuccessStatusCode;
-            }
-            catch (HttpRequestException)
-            {
-                return false;
-            }
+            string pattern = @"^http(s) ?://([\w-]+.)+[\w-]+(/[\w- ./?%&=])?$";
+
+            return Regex.IsMatch(url, pattern, RegexOptions.None);
         }
 
-        public async Task Delete(User user)
+        public async Task DeleteImage(User user)
         {
-            /*var photo = _context.Photos.Find(id);
-            if (photo != null)
-            {
-                Delete(photo);
-                await _context.SaveChangesAsync();
-            }*/
             user.Photo = string.Empty;
         }
 

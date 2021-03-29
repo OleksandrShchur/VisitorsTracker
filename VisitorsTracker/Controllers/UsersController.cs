@@ -139,7 +139,7 @@ namespace VisitorsTracker.Controllers
         /// </summary>
         /// <param name="id">UserId.</param>
         /// <returns>User.</returns>
-        /// <response code="200">Return profileDto.</response>
+        /// <response code="200">Return UserProfileDto.</response>
         /// <response code="400">Attitude set failed.</response>
         [HttpGet("[action]")]
         public IActionResult GetUserProfileById(Guid id)
