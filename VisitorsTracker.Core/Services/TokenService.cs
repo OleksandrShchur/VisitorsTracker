@@ -24,8 +24,8 @@ namespace VisitorsTracker.Core.Services
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IMapper _mapper;
 
-        const string key = "X-Forwarded-For";
-        const string refreshToken = "refreshToken";
+        private const string key = "X-Forwarded-For";
+        private const string refreshToken = "refreshToken";
 
         public TokenService(
             IOptions<JwtOptionsModel> opt,
@@ -154,18 +154,18 @@ namespace VisitorsTracker.Core.Services
                 return false;
             }
 
-            var refreshTokens = user.RefreshTokens.SingleOrDefault(x => x.Token == token);
+            var tokenToRefresh = user.RefreshTokens.SingleOrDefault(x => x.Token == token);
 
             // return false if token is not active
-            if (refreshTokens == null || !_mapper.Map<RefreshTokenDTO>(refreshTokens).IsActive)
+            if (tokenToRefresh == null || !_mapper.Map<RefreshTokenDTO>(tokenToRefresh).IsActive)
             {
                 return false;
             }
 
             // revoke token and save
-            refreshTokens.Revoked = DateTime.UtcNow;
-            refreshTokens.RevokedByIp = IpAddress;
-            user.RefreshTokens = new List<RefreshToken> { refreshTokens };
+            tokenToRefresh.Revoked = DateTime.UtcNow;
+            tokenToRefresh.RevokedByIp = IpAddress;
+            user.RefreshTokens = new List<RefreshToken> { tokenToRefresh };
             await _userService.Update(user);
             _httpContextAccessor.HttpContext.Response.Cookies.Delete(refreshToken);
 

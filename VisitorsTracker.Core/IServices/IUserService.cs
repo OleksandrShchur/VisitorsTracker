@@ -27,10 +27,8 @@ namespace VisitorsTracker.Core.IServices
 
         UserDTO GetUserByRefreshToken(string token);
 
-        Task<string> AddPhoto(IFormFile uploadedFile, User user);
+        Task<string> AddPhoto(IFormFile uploadedFile, Guid uId);
 
-        Task<string> AddPhotoByURL(string url, User user);
-
-        Task DeleteImage(User id);
+        string AddPhotoByURL(string url, Guid uId);
     }
 }

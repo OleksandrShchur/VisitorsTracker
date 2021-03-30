@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -94,9 +92,9 @@ namespace VisitorsTracker.Controllers
 
             await _userService.ChangeAvatar(user.Id, newAva);
 
-            //var updatedPhoto = _userService.GetById(user.Id).Photo.Thumb.ToRenderablePictureString();
+            var updatedPhoto = _userService.GetById(user.Id).PhotoUrl;
 
-            return Ok(/*updatedPhoto*/);
+            return Ok(updatedPhoto);
         }
 
         /// <summary>
@@ -112,7 +110,8 @@ namespace VisitorsTracker.Controllers
 
             var admins = _userService.GetUsersByRole("Admin");
 
-            var emailBody = $"New request from <a href='mailto:{user.Email}?subject=re:{model.Type}'>{user.Email}</a> : <br />{model.Description}. ";
+            var emailBody = $"New request from <a href='mailto:{user.Email}" +
+                $"?subject=re:{model.Type}'>{user.Email}</a> : <br />{model.Description}. ";
 
             try
             {

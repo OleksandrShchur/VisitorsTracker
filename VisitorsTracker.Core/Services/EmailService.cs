@@ -17,7 +17,7 @@ namespace VisitorsTracker.Core.Services
             _senderOptions = opt;
         }
 
-        public Task SendEmailAsync(EmailDTO emailDto)
+        public async Task<bool> SendEmailAsync(EmailDTO emailDto)
         {
             var from = _senderOptions.Value.Account;
             var pass = _senderOptions.Value.Password;
@@ -38,7 +38,8 @@ namespace VisitorsTracker.Core.Services
                 Body = emailDto.MessageText,
                 IsBodyHtml = true,
             };
-            return client.SendMailAsync(mail);
+
+            return await Task.FromResult(client.SendMailAsync(mail).IsCompletedSuccessfully);
         }
     }
 }

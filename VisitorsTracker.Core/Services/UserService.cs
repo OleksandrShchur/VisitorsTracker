@@ -111,12 +111,12 @@ namespace VisitorsTracker.Core.Services
 
             if (user.Photo != null)
             {
-               await DeleteImage(user);
+               DeleteImage(user);
             }
 
             try
             {
-                user.Photo = await AddPhoto(avatar, user);
+                user.Photo = await AddPhoto(avatar, user.Id);
             }
             catch (ArgumentException)
             {
@@ -174,12 +174,16 @@ namespace VisitorsTracker.Core.Services
             return _mapper.Map<UserDTO>(user);
         }
 
-        public async Task<string> AddPhoto(IFormFile uploadedFile, User user)
+        public async Task<string> AddPhoto(IFormFile uploadedFile, Guid uId)
         {
             if (!IsValidImage(uploadedFile))
             {
                 throw new ArgumentException();
             }
+
+            var user = _context.Users
+                .Include(u => u.Photo)
+                .FirstOrDefault(u => u.Id == uId);
 
             if (user == null)
             {
@@ -200,14 +204,22 @@ namespace VisitorsTracker.Core.Services
             return user.Photo;
         }
 
-        public async Task<string> AddPhotoByURL(string url, User user) // to do
+        public string AddPhotoByURL(string url, Guid uId) // to do
         {
             if (!IsImageUrl(url))
             {
                 throw new ArgumentException();
             }
 
-            return url;
+            var user = _context.Users.Find(uId);
+            if (user == null)
+            {
+                throw new VisitorsTrackerException("User is equal null");
+            }
+
+            user.Photo = url;
+
+            return user.Photo;
         }
 
         private bool IsImageUrl(string url)
@@ -217,10 +229,7 @@ namespace VisitorsTracker.Core.Services
             return Regex.IsMatch(url, pattern, RegexOptions.None);
         }
 
-        public async Task DeleteImage(User user)
-        {
-            user.Photo = string.Empty;
-        }
+        private void DeleteImage(User user) => user.Photo = string.Empty;
 
         private static bool IsValidImage(IFormFile file) => file != null;
     }

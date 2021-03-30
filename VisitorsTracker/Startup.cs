@@ -15,7 +15,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
-using VisitorsTracker.Core.HostedService;
 using VisitorsTracker.Core.Infrastructure;
 using VisitorsTracker.Core.IServices;
 using VisitorsTracker.Core.NotificationHandlers;
@@ -108,12 +107,7 @@ namespace VisitorsTracker
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IEmailService, EmailService>();
 
-            services.AddSingleton<ICacheHelper, CacheHelper>();
-
-            //services.Configure<EmailOptionsModel>(Configuration.GetSection("EmailSenderOptions"));
             services.Configure<JwtOptionsModel>(Configuration.GetSection("JWTOptions"));
-
-            services.AddHostedService<SendMessageHostedService>();
             #endregion
 
             services.AddCors();
