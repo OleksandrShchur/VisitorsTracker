@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using VisitorsTracker.Core.DTOs;
@@ -17,18 +16,15 @@ namespace VisitorsTracker.Controllers
     {
         private readonly IUserService _userService;
         private readonly IAuthenticationService _authService;
-        private readonly IMapper _mapper;
         private readonly IEmailService _emailService;
 
         public UsersController(
             IUserService userSrv,
             IAuthenticationService authSrv,
-            IMapper mapper,
             IEmailService emailService)
         {
             _userService = userSrv;
             _authService = authSrv;
-            _mapper = mapper;
             _emailService = emailService;
         }
 
@@ -131,22 +127,6 @@ namespace VisitorsTracker.Controllers
             {
                 return BadRequest(e.Message);
             }
-        }
-
-        /// <summary>
-        /// This method is for get user.
-        /// </summary>
-        /// <param name="id">UserId.</param>
-        /// <returns>User.</returns>
-        /// <response code="200">Return UserProfileDto.</response>
-        /// <response code="400">Attitude set failed.</response>
-        [HttpGet("[action]")]
-        public IActionResult GetUserProfileById(Guid id)
-        {
-            var user = GetCurrentUser(HttpContext.User);
-            var res = _mapper.Map<ProfileViewModel>(_userService.GetProfileById(id, user.Id));
-
-            return Ok(res);
         }
 
         // HELPERS:

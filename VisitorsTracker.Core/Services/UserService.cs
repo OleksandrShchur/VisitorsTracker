@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using VisitorsTracker.Core.DTOs;
 using VisitorsTracker.Core.Exceptions;
 using VisitorsTracker.Core.IServices;
+using VisitorsTracker.Core.Notifications;
 using VisitorsTracker.Db.EFCore;
 using VisitorsTracker.Db.Entities;
 
@@ -60,6 +61,8 @@ namespace VisitorsTracker.Core.Services
             }
 
             await _context.SaveChangesAsync();
+            userDto.Id = result.Id;
+            await _mediator.Publish(new UserProfileCreatedMessage(userDto));
         }
 
         public async Task Update(UserDTO userDTO)
@@ -142,13 +145,6 @@ namespace VisitorsTracker.Core.Services
                 .Include(u => u.Role)
                 .AsNoTracking()
                 .FirstOrDefault(o => o.Email == email));
-
-            return user;
-        }
-
-        public UserProfileDTO GetProfileById(Guid id, Guid fromId)
-        {
-            var user = _mapper.Map<UserDTO, UserProfileDTO>(GetById(id));
 
             return user;
         }

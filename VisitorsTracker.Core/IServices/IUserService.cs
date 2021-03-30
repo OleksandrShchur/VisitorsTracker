@@ -21,8 +21,6 @@ namespace VisitorsTracker.Core.IServices
 
         UserDTO GetByEmail(string email);
 
-        UserProfileDTO GetProfileById(Guid id, Guid fromId);
-
         IEnumerable<UserDTO> GetUsersByRole(string role);
 
         UserDTO GetUserByRefreshToken(string token);
