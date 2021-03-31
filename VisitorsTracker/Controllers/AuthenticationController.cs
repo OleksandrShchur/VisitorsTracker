@@ -57,7 +57,7 @@ namespace VisitorsTracker.Controllers
                 await _userService.Create(user);
             }
 
-            await SetPhoto(userExisting, userView.PhotoUrl);
+            await SetUserPhotoIfEmpty(userExisting, userView.PhotoUrl);
             var authResponseModel = await _authService.AuthenticateUserFromExternalProvider(payload.Email);
             var userInfo = _mapper.Map<UserInfoViewModel>(_userService.GetByEmail(payload.Email));
             userInfo.Token = authResponseModel.JwtToken;
@@ -66,20 +66,12 @@ namespace VisitorsTracker.Controllers
             return Ok(userInfo);
         }
 
-        private async Task<bool> SetPhoto(UserDTO userExisting, string urlPhoto)
+        private async Task SetUserPhotoIfEmpty (UserDTO userExisting, string urlPhoto)
         {
-            if (userExisting != null)
+            if (userExisting != null && userExisting?.PhotoUrl == null)
             {
-                if (userExisting.PhotoUrl == null)
-                {
-                    userExisting.PhotoUrl = _userService.AddPhotoByURL(urlPhoto, userExisting.Id);
-                    await _userService.Update(userExisting);
-
-                    return true;
-                }
+                userExisting.PhotoUrl = await _userService.AddPhotoByURL(urlPhoto, userExisting.Id);
             }
-
-            return false;
         }
     }
 }

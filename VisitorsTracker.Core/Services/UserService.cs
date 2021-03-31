@@ -165,7 +165,8 @@ namespace VisitorsTracker.Core.Services
             var user = _context.Users
                 .Include(u => u.Role)
                 .Include(u => u.RefreshTokens)
-                .SingleOrDefault(u => u.RefreshTokens.Any(t => t.Token.Equals(token)));
+                .SingleOrDefault(u => u.RefreshTokens
+                .Any(t => t.Token.Equals(token, StringComparison.OrdinalIgnoreCase)));
 
             return _mapper.Map<UserDTO>(user);
         }
@@ -200,7 +201,7 @@ namespace VisitorsTracker.Core.Services
             return user.Photo;
         }
 
-        public string AddPhotoByURL(string url, Guid uId) // to do
+        public async Task<string> AddPhotoByURL(string url, Guid uId) // to do
         {
             if (!IsImageUrl(url))
             {
@@ -214,6 +215,8 @@ namespace VisitorsTracker.Core.Services
             }
 
             user.Photo = url;
+            Update(user);
+            await _context.SaveChangesAsync();
 
             return user.Photo;
         }
