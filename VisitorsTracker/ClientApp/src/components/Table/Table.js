@@ -1,5 +1,3 @@
-/* eslint-disable max-classes-per-file */
-/* eslint-disable react/no-unused-state */
 import * as React from 'react';
 import Paper from '@material-ui/core/Paper';
 import { ViewState, EditingState } from '@devexpress/dx-react-scheduler';
@@ -14,7 +12,6 @@ import {
   AppointmentForm,
   DragDropProvider,
   EditRecurrenceMenu,
-  AllDayPanel,
 } from '@devexpress/dx-react-scheduler-material-ui';
 import { connectProps } from '@devexpress/dx-react-core';
 import { KeyboardDateTimePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
@@ -416,12 +413,13 @@ class Table extends React.PureComponent {
     return (
       <Paper
         elevation={3}
-        width={1500}
+        width={1600}
       >
         <Scheduler
           data={data}
           height={700}
           locale='uk-UA'
+          firstDayOfWeek={1}
         >
           <ViewState
             currentDate={currentDate}
