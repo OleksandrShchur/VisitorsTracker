@@ -46,7 +46,8 @@ class LeftSidebar extends Component {
                     </button>
                 </div>
                 <div className={this.state._class + ' left-sidebar'}>
-                    {/* <img src={image} className="center"></img> fix it a little bit later*/}
+                    <br />
+                    <br />
                     <HeaderProfileWrapper />
                     {!this.props.user.id &&
                         <Login />}

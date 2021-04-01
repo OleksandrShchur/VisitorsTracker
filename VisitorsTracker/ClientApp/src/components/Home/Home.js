@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import logo from '../../Images/chnuUkr.png';
+import logo from '../../Images/mainDepartment.jpg';
 
 import './Home.css';
 
@@ -9,7 +9,7 @@ export class Home extends Component {
   render () {
     return (
       <div>
-        <img src={logo} className="center"/>
+        <img src={logo} width={1320} height={720}/>
       </div>
     );
   }

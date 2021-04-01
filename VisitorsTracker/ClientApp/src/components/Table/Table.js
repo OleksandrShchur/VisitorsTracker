@@ -1,5 +1,6 @@
 import * as React from 'react';
 import Paper from '@material-ui/core/Paper';
+import { Link } from 'react-router-dom';
 import { ViewState, EditingState } from '@devexpress/dx-react-scheduler';
 import {
   Scheduler,
@@ -165,7 +166,7 @@ class AppointmentFormContainerBasic extends React.PureComponent {
 
     const pickerEditorProps = field => ({
       className: classes.picker,
-      // keyboard: true,
+      keyboard: true,
       ampm: false,
       value: displayAppointmentData[field],
       onChange: date => this.changeAppointment({
@@ -246,7 +247,7 @@ class AppointmentFormContainerBasic extends React.PureComponent {
                   this.commitAppointment('deleted');
                 }}
               >
-                Delete
+                Видалити
               </Button>
             )}
             <Button
@@ -258,7 +259,7 @@ class AppointmentFormContainerBasic extends React.PureComponent {
                 applyChanges();
               }}
             >
-              {isNewAppointment ? 'Create' : 'Save'}
+              {isNewAppointment ? 'Створити' : 'Зберегти'}
             </Button>
           </div>
         </div>
@@ -283,7 +284,7 @@ class Table extends React.PureComponent {
     super(props);
     this.state = {
       data: appointments,
-      currentDate: '2018-06-27',
+      currentDate: '2021-02-01',
       confirmationVisible: false,
       editingFormVisible: false,
       deletedAppointmentId: undefined,
@@ -407,19 +408,19 @@ class Table extends React.PureComponent {
       editingFormVisible,
       startDayHour,
       endDayHour,
+      type,
     } = this.state;
     const { classes } = this.props;
 
     return (
       <Paper
         elevation={3}
-        width={1600}
+        width={2000}
       >
         <Scheduler
           data={data}
           height={700}
           locale='uk-UA'
-          firstDayOfWeek={1}
         >
           <ViewState
             currentDate={currentDate}
@@ -433,8 +434,8 @@ class Table extends React.PureComponent {
             startDayHour={startDayHour}
             endDayHour={endDayHour}
             cellDuration={60}
+            excludedDays={[0]}
           />
-          <MonthView />
           <EditRecurrenceMenu />
           <Appointments />
           <AppointmentTooltip
@@ -457,19 +458,19 @@ class Table extends React.PureComponent {
           onClose={this.cancelDelete}
         >
           <DialogTitle>
-            Delete Appointment
+            Видалення заняття
           </DialogTitle>
           <DialogContent>
             <DialogContentText>
-              Are you sure you want to delete this appointment?
+              Ви впевнені, що хочете видалити це заняття?
             </DialogContentText>
           </DialogContent>
           <DialogActions>
             <Button onClick={this.toggleConfirmationVisible} color="primary" variant="outlined">
-              Cancel
+              Відміна
             </Button>
             <Button onClick={this.commitDeletedAppointment} color="secondary" variant="outlined">
-              Delete
+              Видалити
             </Button>
           </DialogActions>
         </Dialog>
