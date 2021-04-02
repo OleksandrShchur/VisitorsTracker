@@ -27,6 +27,6 @@ namespace VisitorsTracker.Core.IServices
 
         Task<string> AddPhoto(IFormFile uploadedFile, Guid uId);
 
-        Task<string> AddPhotoByURL(string url, Guid uId);
+        string SavePhotoInFolder(string url);
     }
 }

@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -187,7 +188,7 @@ namespace VisitorsTracker.Core.Services
                 throw new VisitorsTrackerException("User is equal null");
             }
 
-            user.Photo = $"/Img/{uploadedFile.FileName}";
+            user.Photo = $"/Img/{uploadedFile.FileName}{new Guid()}";
 
             // save file in Img folder in wwwroot directory
             using (var fileStream = new FileStream($"{_appEnvironment.WebRootPath}{user.Photo}", FileMode.Create))
@@ -201,24 +202,21 @@ namespace VisitorsTracker.Core.Services
             return user.Photo;
         }
 
-        public async Task<string> AddPhotoByURL(string url, Guid uId) // to do
+        public string SavePhotoInFolder(string url) // to do
         {
             if (!IsImageUrl(url))
             {
                 throw new ArgumentException();
             }
 
-            var user = _context.Users.Find(uId);
-            if (user == null)
-            {
-                throw new VisitorsTrackerException("User is equal null");
-            }
+            string photoName = $"{_appEnvironment.WebRootPath}{new Guid()}";
 
-            user.Photo = url;
-            Update(user);
-            await _context.SaveChangesAsync();
+            Uri uri = new Uri(url);
+            WebClient webClient = new WebClient();
 
-            return user.Photo;
+            webClient.DownloadFileAsync(uri, photoName);
+
+            return photoName;
         }
 
         private bool IsImageUrl(string url)

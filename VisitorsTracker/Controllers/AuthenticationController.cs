@@ -53,7 +53,7 @@ namespace VisitorsTracker.Controllers
                 var user = _mapper.Map<UserViewModel, UserDTO>(userView);
                 user.Email = payload.Email;
                 user.Name = payload.Name;
-                user.PhotoUrl = _userService.AddPhotoByURL(userView.PhotoUrl, userView.Id);
+                user.PhotoUrl = _userService.SavePhotoInFolder(userView.PhotoUrl);
                 await _userService.Create(user);
             }
 
@@ -70,7 +70,9 @@ namespace VisitorsTracker.Controllers
         {
             if (userExisting != null && userExisting?.PhotoUrl == null)
             {
-                userExisting.PhotoUrl = await _userService.AddPhotoByURL(urlPhoto, userExisting.Id);
+                userExisting.PhotoUrl = _userService.SavePhotoInFolder(urlPhoto);
+
+                await _userService.Update(userExisting);
             }
         }
     }
