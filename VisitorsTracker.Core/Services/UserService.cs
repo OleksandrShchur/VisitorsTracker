@@ -81,6 +81,8 @@ namespace VisitorsTracker.Core.Services
             var result = _mapper.Map<UserDTO, User>(userDTO);
 
             Update(result);
+            _context.Entry(result).State = EntityState.Detached;
+
             await _context.SaveChangesAsync();
         }
 
@@ -202,7 +204,7 @@ namespace VisitorsTracker.Core.Services
             return user.Photo;
         }
 
-        public string SavePhotoInFolder(string url) // to do
+        public async Task<string> SavePhotoInFolder(string url) // to do
         {
             if (!IsImageUrl(url))
             {
@@ -211,12 +213,15 @@ namespace VisitorsTracker.Core.Services
 
             string photoName = $"{_appEnvironment.WebRootPath}{new Guid()}";
 
-            Uri uri = new Uri(url);
+            var result = _client.Value.GetAsync(url);
+
+            var image =  await result.Result.Content.ReadAsStringAsync();
+
+            return "";
+            /*Uri uri = new Uri(url);
             WebClient webClient = new WebClient();
 
-            webClient.DownloadFileAsync(uri, photoName);
-
-            return photoName;
+            webClient.DownloadFileAsync(uri, photoName);*/
         }
 
         private bool IsImageUrl(string url)
