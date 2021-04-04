@@ -3,11 +3,10 @@ import Paper from '@material-ui/core/Paper';
 import { Link } from 'react-router-dom';
 import { ViewState, EditingState } from '@devexpress/dx-react-scheduler';
 import {
+  Resources,
   Scheduler,
   Toolbar,
-  MonthView,
   WeekView,
-  ViewSwitcher,
   Appointments,
   AppointmentTooltip,
   AppointmentForm,
@@ -33,6 +32,7 @@ import Notes from '@material-ui/icons/Notes';
 import Close from '@material-ui/icons/Close';
 import CalendarToday from '@material-ui/icons/CalendarToday';
 import Create from '@material-ui/icons/Create';
+import { indigo, blue, teal } from '@material-ui/core/colors';
 
 import { appointments } from './demoData';
 import './Table.css';
@@ -278,6 +278,32 @@ const styles = theme => ({
   },
 });
 
+const resources = [{
+  fieldName: 'location',
+  title: 'Аудиторія',
+  instances: [
+    { id: 'Room 1', text: 'Room 1', color: indigo },
+    { id: 'Room 2', text: 'Room 2', color: blue },
+    { id: 'Room 3', text: 'Room 3', color: teal },
+  ],
+}, {
+  fieldName: 'type',
+  title: 'Тип',
+  instances: [
+    { id: 1, text: 'High Priority', color: teal },
+    { id: 2, text: 'Medium Priority', color: blue },
+    { id: 3, text: 'Low Priority', color: indigo },
+  ],
+}];
+
+const target = {
+  data: "12.2",
+  time: 12.6,
+  priority: "low",
+  title: "sot",
+}
+
+
 /* eslint-disable-next-line react/no-multi-comp */
 class Table extends React.PureComponent {
   constructor(props) {
@@ -324,6 +350,7 @@ class Table extends React.PureComponent {
           });
         }
       };
+
 
       return {
         visible: editingFormVisible,
@@ -442,15 +469,20 @@ class Table extends React.PureComponent {
             showOpenButton
             showCloseButton
             showDeleteButton
+            //appointmentMeta={target} to do
           />
           <Toolbar />
-          <ViewSwitcher />
           <AppointmentForm
             overlayComponent={this.appointmentForm}
             visible={editingFormVisible}
             onVisibilityChange={this.toggleEditingFormVisibility}
           />
           <DragDropProvider />
+
+          <Resources
+            data={resources}
+          />
+
         </Scheduler>
 
         <Dialog
