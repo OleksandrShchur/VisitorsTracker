@@ -189,11 +189,12 @@ namespace VisitorsTracker.Core.Services
             {
                 throw new VisitorsTrackerException("User is equal null");
             }
-
-            user.Photo = $"/Img/{uploadedFile.FileName}{new Guid()}";
+            
+            user.Photo = $"\\Img\\{uploadedFile.FileName}{new Guid()}";
 
             // save file in Img folder in wwwroot directory
-            using (var fileStream = new FileStream($"{_appEnvironment.WebRootPath}{user.Photo}", FileMode.Create))
+            using (var fileStream = new FileStream($"{_appEnvironment.WebRootPath}{user.Photo}",
+                FileMode.Create))
             {
                 await uploadedFile.CopyToAsync(fileStream);
             }
@@ -211,17 +212,16 @@ namespace VisitorsTracker.Core.Services
                 throw new ArgumentException();
             }
 
-            string photoName = $"{_appEnvironment.WebRootPath}{new Guid()}";
+            string photoPath = $"\\Img\\{new Guid()}.jpg";
 
-            var result = _client.Value.GetAsync(url);
+            var response = _client.Value.GetAsync(url);
+            using (var fileStream = new FileStream($"{_appEnvironment.WebRootPath}{photoPath}",
+                FileMode.Create))
+            {
+                await response.Result.Content.CopyToAsync(fileStream);
+            }
 
-            var image =  await result.Result.Content.ReadAsStringAsync();
-
-            return "";
-            /*Uri uri = new Uri(url);
-            WebClient webClient = new WebClient();
-
-            webClient.DownloadFileAsync(uri, photoName);*/
+            return photoPath;
         }
 
         private bool IsImageUrl(string url)
