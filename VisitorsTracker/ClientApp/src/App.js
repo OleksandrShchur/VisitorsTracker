@@ -9,7 +9,7 @@ import Profile from './components/Profile/index';
 import Schedule from './components/Schedule/index';
 import Class from './components/Class/index';
 import UserProfile from './components/Profile/UserProfile';
-import UserVisitings from './components/UserVisitings/index';
+import GroupVisitings from './components/GroupVisitings/index';
 
 import './custom.css'
 
@@ -24,7 +24,7 @@ export default class App extends Component {
           <Route path="/schedule" component={Schedule} />
           <Route path="/class" component={Class} />
           <Route path="/userProfile" component={UserProfile} />
-          <Route path="/userVisiting" component={UserVisitings} />
+          <Route path="/groupVisiting" component={GroupVisitings} />
         </Layout>
       </BrowserRouter>
     );

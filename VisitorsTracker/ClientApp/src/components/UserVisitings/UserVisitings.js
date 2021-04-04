@@ -4,117 +4,77 @@ import {
     Chart,
     ArgumentAxis,
     ValueAxis,
-    LineSeries,
+    AreaSeries,
     Title,
     Legend,
 } from '@devexpress/dx-react-chart-material-ui';
+import classNames from 'clsx';
 import { withStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
-import { ArgumentScale, Animation } from '@devexpress/dx-react-chart';
-import {
-    curveCatmullRom,
-    line,
-} from 'd3-shape';
-import { scalePoint } from 'd3-scale';
+import { Stack, Animation } from '@devexpress/dx-react-chart';
+import { stackOffsetExpand } from 'd3-shape';
 
 const data = [
     {
-        year: 1993, tvNews: 69, church: 79, military: 72,
+        week: 1, attendant: 69, absent: 31,
     }, {
-        year: 1995, tvNews: 53, church: 92, military: 33,
+        week: 2, attendant: 60, absent: 40,
     }, {
-        year: 1997, tvNews: 64, church: 95, military: 30,
+        week: 3, attendant: 64, absent: 36,
     }, {
-        year: 1999, tvNews: 73, church: 92, military: 34,
+        week: 4, attendant: 73, absent: 27,
     }, {
-        year: 2001, tvNews: 85, church: 98, military: 52,
+        week: 5, attendant: 80, absent: 20,
     }, {
-        year: 2003, tvNews: 56, church: 97, military: 48,
+        week: 6, attendant: 56, absent: 33,
     }, {
-        year: 2006, tvNews: 92, church: 58, military: 49,
+        week: 7, attendant: 88, absent: 12,
     }, {
-        year: 2008, tvNews: 71, church: 86, military: 65,
+        week: 8, attendant: 71, absent: 29,
     }, {
-        year: 2010, tvNews: 60, church: 75, military: 44,
+        week: 9, attendant: 60, absent: 40,
     }, {
-        year: 2012, tvNews: 71, church: 65, military: 23,
+        week: 10, attendant: 71, absent: 29,
     }, {
-        year: 2014, tvNews: 80, church: 75, military: 89,
+        week: 11, attendant: 80, absent: 20,
     }, {
-        year: 2016, tvNews: 88, church: 60, military: 81,
+        week: 12, attendant: 88, absent: 12,
     }, {
-        year: 2018, tvNews: 80, church: 50, military: 83,
+        week: 13, attendant: 80, absent: 20,
+    }, {
+        week: 14, attendant: 89, absent: 11,
+    }, {
+        week: 15, attendant: 78, absent: 22,
     },
 ];
 
-const Line = props => (
-    <LineSeries.Path
-        {...props}
-        path={line()
-            .x(({ arg }) => arg)
-            .y(({ val }) => val)
-            .curve(curveCatmullRom)}
-    />
-);
-
-const titleStyles = {
-    title: {
-        textAlign: 'center',
-        width: '100%',
-        marginBottom: '10px',
-    },
+const setStyle = (style) => {
+    const wrap = withStyles({ root: style });
+    return Target => wrap(({ classes, className, ...restProps }) => (
+        <Target className={classNames(classes.root, className)} {...restProps} />
+    ));
 };
-const Text = withStyles(titleStyles)((props) => {
-    const { text, classes } = props;
-    const [mainText, subText] = text.split('\\n');
-    return (
-        <div className={classes.title}>
-            <Typography component="h3" variant="h5">
-                {mainText}
-            </Typography>
-            <Typography variant="subtitle1">{subText}</Typography>
-        </div>
-    );
-});
 
-const legendStyles = () => ({
-    root: {
-        display: 'flex',
-        margin: 'auto',
-        flexDirection: 'row',
-    },
-});
-const legendLabelStyles = theme => ({
-    label: {
-        marginBottom: theme.spacing(1),
-        whiteSpace: 'nowrap',
-    },
-});
-const legendItemStyles = () => ({
-    item: {
-        flexDirection: 'column-reverse',
-    },
-});
+const LegendRoot = setStyle({
+    display: 'flex',
+    margin: 'auto',
+    flexDirection: 'row',
+})(Legend.Root);
 
-const legendRootBase = ({ classes, ...restProps }) => (
-    <Legend.Root {...restProps} className={classes.root} />
-);
-const legendLabelBase = ({ classes, ...restProps }) => (
-    <Legend.Label className={classes.label} {...restProps} />
-);
-const legendItemBase = ({ classes, ...restProps }) => (
-    <Legend.Item className={classes.item} {...restProps} />
-);
-const Root = withStyles(legendStyles, { name: 'LegendRoot' })(legendRootBase);
-const Label = withStyles(legendLabelStyles, { name: 'LegendLabel' })(legendLabelBase);
-const Item = withStyles(legendItemStyles, { name: 'LegendItem' })(legendItemBase);
-const demoStyles = () => ({
-    chart: {
-        paddingRight: '30px',
-    },
-});
+const LegendLabel = setStyle({
+    whiteSpace: 'nowrap',
+})(Legend.Label);
 
-class Demo extends React.PureComponent {
+const ChartRoot = setStyle({
+    paddingRight: '20px',
+})(Chart.Root);
+
+const format = () => tick => tick;
+const formatForFullstack = scale => scale.tickFormat(null, '%');
+const stacks = [{
+    series: ['Присутність', 'Відсутність'],
+}];
+
+export default class Demo extends React.PureComponent {
     constructor(props) {
         super(props);
 
@@ -125,47 +85,31 @@ class Demo extends React.PureComponent {
 
     render() {
         const { data: chartData } = this.state;
-        const { classes } = this.props;
-
         return (
             <Paper>
                 <Chart
                     data={chartData}
-                    className={classes.chart}
+                    rootComponent={ChartRoot}
                 >
-                    <ArgumentScale factory={scalePoint} />
-                    <ArgumentAxis />
-                    <ValueAxis />
-
-                    <LineSeries
-                        name="Лекції"
-                        valueField="tvNews"
-                        argumentField="year"
-                        seriesComponent={Line}
+                    <ArgumentAxis tickFormat={format} />
+                    <ValueAxis tickFormat={formatForFullstack} />
+                    <AreaSeries
+                        name="Присутність"
+                        valueField="attendant"
+                        argumentField="week"
                     />
-                    <LineSeries
-                        name="Лабораторні"
-                        valueField="church"
-                        argumentField="year"
-                        seriesComponent={Line}
-                    />
-                    <LineSeries
-                        name="Семінари"
-                        valueField="military"
-                        argumentField="year"
-                        seriesComponent={Line}
+                    <AreaSeries
+                        name="Відсутність"
+                        valueField="absent"
+                        argumentField="week"
                     />
 
-                    <Legend position="bottom" rootComponent={Root} itemComponent={Item} labelComponent={Label} />
-                    <Title
-                        text="Energy Consumption in 2004\n(Millions of Tons, Oil Equivalent)"
-                        textComponent={Text}
-                    />
                     <Animation />
+                    <Legend position="bottom" rootComponent={LegendRoot} labelComponent={LegendLabel} />
+                    <Title text="Відвідуваність студента" />
+                    <Stack stacks={stacks} offset={stackOffsetExpand} />
                 </Chart>
             </Paper>
         );
     }
 }
-
-export default withStyles(demoStyles, { name: 'Demo' })(Demo);

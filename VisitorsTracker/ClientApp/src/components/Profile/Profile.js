@@ -12,6 +12,7 @@ import EditGenderContainer from '../../containers/EditProfileContainers/EditGend
 import EditBirthdayContainer from '../../containers/EditProfileContainers/EditBirthdayContainer';
 import genders from '../../constants/genderConstants';
 import ChangeAvatarWrapper from '../../containers/EditProfileContainers/ChangeAvatar';
+import UserVisiting from '../UserVisitings/index';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -93,6 +94,8 @@ const Profile = (props) => {
                     </Typography>
                 </ExpansionPanelDetails>
             </ExpansionPanel>
+            <br />
+            <UserVisiting />
         </div>
     );
 }
