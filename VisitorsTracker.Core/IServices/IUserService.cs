@@ -21,18 +21,12 @@ namespace VisitorsTracker.Core.IServices
 
         UserDTO GetByEmail(string email);
 
-        ProfileDTO GetProfileById(Guid id, Guid fromId);
-
-        //IEnumerable<UserDTO> Get(UsersFilterViewModel model, out int count, Guid id); // to do
-
         IEnumerable<UserDTO> GetUsersByRole(string role);
 
         UserDTO GetUserByRefreshToken(string token);
 
-        Task<string> AddPhoto(IFormFile uploadedFile);
+        Task<string> AddPhoto(IFormFile uploadedFile, Guid uId);
 
-        Task<string> AddPhotoByURL(string url);
-
-        Task Delete(User id);
+        Task<string> SavePhotoInFolder(string url);
     }
 }

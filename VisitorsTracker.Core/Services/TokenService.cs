@@ -24,6 +24,9 @@ namespace VisitorsTracker.Core.Services
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IMapper _mapper;
 
+        private const string key = "X-Forwarded-For";
+        private const string refreshToken = "refreshToken";
+
         public TokenService(
             IOptions<JwtOptionsModel> opt,
             IJwtSigningEncodingKey jwtSigningEncodingKey,
@@ -42,9 +45,9 @@ namespace VisitorsTracker.Core.Services
         {
             get
             {
-                if (_httpContextAccessor.HttpContext.Request.Headers.ContainsKey("X-Forwarded-For"))
+                if (_httpContextAccessor.HttpContext.Request.Headers.ContainsKey(key))
                 {
-                    return _httpContextAccessor.HttpContext.Request.Headers["X-Forwarded-For"];
+                    return _httpContextAccessor.HttpContext.Request.Headers[key];
                 }
                 else
                 {
@@ -151,20 +154,20 @@ namespace VisitorsTracker.Core.Services
                 return false;
             }
 
-            var refreshToken = user.RefreshTokens.SingleOrDefault(x => x.Token == token);
+            var tokenToRefresh = user.RefreshTokens.SingleOrDefault(x => x.Token == token);
 
             // return false if token is not active
-            if (!_mapper.Map<RefreshTokenDTO>(refreshToken).IsActive || refreshToken == null)
+            if (tokenToRefresh == null || !_mapper.Map<RefreshTokenDTO>(tokenToRefresh).IsActive)
             {
                 return false;
             }
 
             // revoke token and save
-            refreshToken.Revoked = DateTime.Now;
-            refreshToken.RevokedByIp = IpAddress;
-            user.RefreshTokens = new List<RefreshToken> { refreshToken };
+            tokenToRefresh.Revoked = DateTime.UtcNow;
+            tokenToRefresh.RevokedByIp = IpAddress;
+            user.RefreshTokens = new List<RefreshToken> { tokenToRefresh };
             await _userService.Update(user);
-            _httpContextAccessor.HttpContext.Response.Cookies.Delete("refreshToken");
+            _httpContextAccessor.HttpContext.Response.Cookies.Delete(refreshToken);
 
             return true;
         }
@@ -176,8 +179,8 @@ namespace VisitorsTracker.Core.Services
                 HttpOnly = true,
                 Expires = DateTime.Now.AddDays(7),
             };
-            _httpContextAccessor.HttpContext.Response.Cookies.Delete("refreshToken");
-            _httpContextAccessor.HttpContext.Response.Cookies.Append("refreshToken", token, cookieOptions);
+            _httpContextAccessor.HttpContext.Response.Cookies.Delete(refreshToken);
+            _httpContextAccessor.HttpContext.Response.Cookies.Append(refreshToken, token, cookieOptions);
         }
     }
 }

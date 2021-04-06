@@ -53,11 +53,11 @@ namespace VisitorsTracker.Controllers
                 var user = _mapper.Map<UserViewModel, UserDTO>(userView);
                 user.Email = payload.Email;
                 user.Name = payload.Name;
-                user.PhotoUrl = await _userService.AddPhotoByURL(userView.PhotoUrl);
+                user.PhotoUrl = await _userService.SavePhotoInFolder(userView.PhotoUrl);
                 await _userService.Create(user);
             }
 
-            await SetPhoto(userExisting, userView.PhotoUrl);
+            await SetUserPhotoIfEmpty(userExisting, userView.PhotoUrl);
             var authResponseModel = await _authService.AuthenticateUserFromExternalProvider(payload.Email);
             var userInfo = _mapper.Map<UserInfoViewModel>(_userService.GetByEmail(payload.Email));
             userInfo.Token = authResponseModel.JwtToken;
@@ -66,16 +66,13 @@ namespace VisitorsTracker.Controllers
             return Ok(userInfo);
         }
 
-        private async Task SetPhoto(UserDTO userExisting, string urlPhoto)
+        private async Task SetUserPhotoIfEmpty (UserDTO userExisting, string urlPhoto)
         {
-            if (userExisting != null)
+            if (userExisting != null && userExisting?.PhotoUrl == null)
             {
-                if (userExisting.PhotoUrl == null)
-                {
-                    userExisting.PhotoUrl = await _userService.AddPhotoByURL(urlPhoto); // conflict with id. 
-                    //Updates record at the same time in different place
-                    //await _userService.Update(userExisting);
-                }
+                userExisting.PhotoUrl = await _userService.SavePhotoInFolder(urlPhoto);
+
+                await _userService.Update(userExisting);
             }
         }
     }

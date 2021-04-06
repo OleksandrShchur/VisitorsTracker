@@ -7,12 +7,12 @@ namespace VisitorsTracker.Core.Infrastructure
     {
         private readonly SymmetricSecurityKey _secretKey;
 
+        public string SigningAlgorithm { get; } = SecurityAlgorithms.HmacSha256;
+
         public SigningSymmetricKey(string key)
         {
             this._secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key));
         }
-
-        public string SigningAlgorithm { get; } = SecurityAlgorithms.HmacSha256;
 
         public SecurityKey GetKey() => this._secretKey;
     }
