@@ -33,18 +33,18 @@
 
   <ItemGroup>
     <!-- Don't publish the SPA source files, but do show them in the project files list -->
+    <Compile Remove="wwwroot\Img\**" />
     <Content Remove="$(SpaRoot)**" />
+    <Content Remove="wwwroot\Img\**" />
+    <EmbeddedResource Remove="wwwroot\Img\**" />
     <None Remove="$(SpaRoot)**" />
+    <None Remove="wwwroot\Img\**" />
     <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\VisitorsTracker.Core\VisitorsTracker.Core.csproj" />
     <ProjectReference Include="..\VisitorsTracker.Db\VisitorsTracker.Db.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="wwwroot\Img\" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

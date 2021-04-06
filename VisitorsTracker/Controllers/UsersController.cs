@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using VisitorsTracker.Core.DTOs;
@@ -19,18 +16,15 @@ namespace VisitorsTracker.Controllers
     {
         private readonly IUserService _userService;
         private readonly IAuthenticationService _authService;
-        private readonly IMapper _mapper;
         private readonly IEmailService _emailService;
 
         public UsersController(
             IUserService userSrv,
             IAuthenticationService authSrv,
-            IMapper mapper,
             IEmailService emailService)
         {
             _userService = userSrv;
             _authService = authSrv;
-            _mapper = mapper;
             _emailService = emailService;
         }
 
@@ -94,9 +88,9 @@ namespace VisitorsTracker.Controllers
 
             await _userService.ChangeAvatar(user.Id, newAva);
 
-            //var updatedPhoto = _userService.GetById(user.Id).Photo.Thumb.ToRenderablePictureString();
+            var updatedPhoto = _userService.GetById(user.Id).PhotoUrl;
 
-            return Ok(/*updatedPhoto*/);
+            return Ok(updatedPhoto);
         }
 
         /// <summary>
@@ -112,7 +106,8 @@ namespace VisitorsTracker.Controllers
 
             var admins = _userService.GetUsersByRole("Admin");
 
-            var emailBody = $"New request from <a href='mailto:{user.Email}?subject=re:{model.Type}'>{user.Email}</a> : <br />{model.Description}. ";
+            var emailBody = $"New request from <a href='mailto:{user.Email}" +
+                $"?subject=re:{model.Type}'>{user.Email}</a> : <br />{model.Description}. ";
 
             try
             {
@@ -132,22 +127,6 @@ namespace VisitorsTracker.Controllers
             {
                 return BadRequest(e.Message);
             }
-        }
-
-        /// <summary>
-        /// This method is for get user.
-        /// </summary>
-        /// <param name="id">UserId.</param>
-        /// <returns>User.</returns>
-        /// <response code="200">Return profileDto.</response>
-        /// <response code="400">Attitude set failed.</response>
-        [HttpGet("[action]")]
-        public IActionResult GetUserProfileById(Guid id)
-        {
-            var user = GetCurrentUser(HttpContext.User);
-            var res = _mapper.Map<ProfileViewModel>(_userService.GetProfileById(id, user.Id));
-
-            return Ok(res);
         }
 
         // HELPERS:

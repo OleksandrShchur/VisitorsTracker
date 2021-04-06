@@ -3,7 +3,7 @@ using VisitorsTracker.Db.Enums;
 
 namespace VisitorsTracker.Core.DTOs
 {
-    public class ProfileDTO
+    public class UserProfileDTO
     {
         public Guid Id { get; set; }
 

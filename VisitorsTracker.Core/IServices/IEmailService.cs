@@ -5,6 +5,6 @@ namespace VisitorsTracker.Core.IServices
 {
     public interface IEmailService
     {
-        Task SendEmailAsync(EmailDTO emailDTO);
+        Task<bool> SendEmailAsync(EmailDTO emailDTO);
     }
 }

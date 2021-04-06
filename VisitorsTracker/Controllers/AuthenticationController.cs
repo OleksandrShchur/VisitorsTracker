@@ -48,16 +48,16 @@ namespace VisitorsTracker.Controllers
                 userView.TokenId, new GoogleJsonWebSignature.ValidationSettings());
             UserDTO userExisting = _userService.GetByEmail(payload.Email);
 
-            if (userExisting == null && !string.IsNullOrEmpty(payload.Email) && payload.HostedDomain.Equals("chnu.edu.ua"))
+            if (userExisting == null && !string.IsNullOrEmpty(payload.Email))
             {
                 var user = _mapper.Map<UserViewModel, UserDTO>(userView);
                 user.Email = payload.Email;
                 user.Name = payload.Name;
-                //user.Photo = await _userService.AddPhotoByURL(userView.PhotoUrl);
+                user.PhotoUrl = await _userService.SavePhotoInFolder(userView.PhotoUrl);
                 await _userService.Create(user);
             }
 
-            //await SetPhoto(userExisting, userView.PhotoUrl);
+            await SetUserPhotoIfEmpty(userExisting, userView.PhotoUrl);
             var authResponseModel = await _authService.AuthenticateUserFromExternalProvider(payload.Email);
             var userInfo = _mapper.Map<UserInfoViewModel>(_userService.GetByEmail(payload.Email));
             userInfo.Token = authResponseModel.JwtToken;
@@ -66,21 +66,14 @@ namespace VisitorsTracker.Controllers
             return Ok(userInfo);
         }
 
-        private async Task<bool> SetPhoto(UserDTO userExisting, string urlPhoto)
+        private async Task SetUserPhotoIfEmpty (UserDTO userExisting, string urlPhoto)
         {
-            if (userExisting != null)
+            if (userExisting != null && userExisting?.PhotoUrl == null)
             {
-                if (userExisting.PhotoUrl == null)
-                {
-                    //userExisting.PhotoUrl = await _photoService.AddPhotoByURL(urlPhoto);
-                    //userExisting.PhotoId = userExisting.Photo.Id;
-                    await _userService.Update(userExisting);
+                userExisting.PhotoUrl = await _userService.SavePhotoInFolder(urlPhoto);
 
-                    return true;
-                }
+                await _userService.Update(userExisting);
             }
-
-            return false;
         }
     }
 }
