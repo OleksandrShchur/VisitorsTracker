@@ -7,7 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -190,7 +189,7 @@ namespace VisitorsTracker.Core.Services
                 throw new VisitorsTrackerException("User is equal null");
             }
             
-            user.Photo = $"\\Img\\{uploadedFile.FileName}{new Guid()}";
+            user.Photo = $"/Photos/{Guid.NewGuid()}_{uploadedFile.FileName}";
 
             // save file in Img folder in wwwroot directory
             using (var fileStream = new FileStream($"{_appEnvironment.WebRootPath}{user.Photo}",
@@ -205,20 +204,22 @@ namespace VisitorsTracker.Core.Services
             return user.Photo;
         }
 
-        public async Task<string> SavePhotoInFolder(string url) // to do
+        public async Task<string> SavePhotoInFolder(string url)
         {
             if (!IsImageUrl(url))
             {
                 throw new ArgumentException();
             }
 
-            string photoPath = $"\\Img\\{new Guid()}.jpg";
+            string photoPath = $"/Photos/{Guid.NewGuid()}.jpeg";
 
-            var response = _client.Value.GetAsync(url);
-            using (var fileStream = new FileStream($"{_appEnvironment.WebRootPath}{photoPath}",
-                FileMode.Create))
+            using (var request = new HttpRequestMessage(HttpMethod.Get, url))
+            using (
+                Stream contentStream = await (await _client.Value.SendAsync(request)).Content.ReadAsStreamAsync(),
+                stream = new FileStream($"{_appEnvironment.WebRootPath}{photoPath}", FileMode.Create))
             {
-                await response.Result.Content.CopyToAsync(fileStream);
+                
+                await contentStream.CopyToAsync(stream);
             }
 
             return photoPath;

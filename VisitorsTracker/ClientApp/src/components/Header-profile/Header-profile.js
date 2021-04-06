@@ -6,6 +6,7 @@ import Zoom from '@material-ui/core/Zoom';
 import CustomAvatar from '../Avatar/Avatar';
 import './Header-profile.css';
 import { connect } from 'react-redux';
+import webRootPath from '../../constants/projectConstants';
 
 class HeaderProfile extends Component {
     render() {
@@ -16,7 +17,7 @@ class HeaderProfile extends Component {
                 <div className='d-inline-block'>
                     {id && (
                         <div className="d-flex flex-column align-items-center">
-                            <CustomAvatar size="big" photoUrl={photoUrl} name={name} />
+                            <CustomAvatar size="big" photoUrl={webRootPath + photoUrl} name={name} />
                             <h4>{name}</h4>
                             <div>
                                 <Link to={'/profile'}>
