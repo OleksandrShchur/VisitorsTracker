@@ -205,18 +205,18 @@ class AppointmentFormContainerBasic extends React.PureComponent {
             <div className={classes.wrapper}>
               <Create className={classes.icon} color="action" />
               <TextField
-                {...textEditorProps('title')}
+                {...textEditorProps('Назва предмету')}
               />
             </div>
             <div className={classes.wrapper}>
               <CalendarToday className={classes.icon} color="action" />
               <MuiPickersUtilsProvider utils={MomentUtils}>
                 <KeyboardDateTimePicker
-                  label="Start Date"
+                  label="Початок заняття"
                   {...pickerEditorProps('startDate')}
                 />
                 <KeyboardDateTimePicker
-                  label="End Date"
+                  label="Кінець заняття"
                   {...pickerEditorProps('endDate')}
                 />
               </MuiPickersUtilsProvider>
@@ -224,13 +224,13 @@ class AppointmentFormContainerBasic extends React.PureComponent {
             <div className={classes.wrapper}>
               <LocationOn className={classes.icon} color="action" />
               <TextField
-                {...textEditorProps('location')}
+                {...textEditorProps('Аудиторія')}
               />
             </div>
             <div className={classes.wrapper}>
               <Notes className={classes.icon} color="action" />
               <TextField
-                {...textEditorProps('notes')}
+                {...textEditorProps('Додаткові коментарі')}
                 multiline
                 rows="6"
               />

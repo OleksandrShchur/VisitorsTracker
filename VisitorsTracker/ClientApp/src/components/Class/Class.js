@@ -9,31 +9,45 @@ import TableHead from '@material-ui/core/TableHead';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
 import Box from '@material-ui/core/Box';
+import { Button } from 'reactstrap';
+
+const checkVisiting = 
+        <div>
+            <Button variant="success">Success</Button>{' '}
+            <Button variant="warning">Warning</Button>
+        </ div>
 
 const columns = [
-    { id: 'id', label: 'Номер', minWidth: 17 },
-    { id: 'name', label: 'ПІБ', minWidth: 300 },
-    { id: 'email', label: 'Пошта', minWidth: 250 },
+    { id: 'id', label: 'Номер', minWidth: 15 },
+    { id: 'name', label: 'ПІБ', minWidth: 240 },
+    { id: 'email', label: 'Пошта', minWidth: 190 },
+    { id: 'group', label: 'Група', minWidth: 70 },
 ];
 
-function createData(id, name, email) {
-    return { id, name, email };
+function createData(id, name, email, group) {
+    return { id, name, email, group };
 }
 
+const numberOfGroup = "301";
 const rows = [
-    createData(1, 'Мельничук Станіслав', 'wasif@email.com'),
-    createData(2, 'Орелецький Валентин', 'ali@email.com'),
-    createData(3, 'Продан Анатолій', 'saad@email.com'),
-    createData(4, 'Роєк Анастасія', 'asad@email.com'),
-    createData(5, 'Стрільчук Вадим', 'asad@email.com'),
-    createData(6, 'Романовський Михайло', 'asad@email.com'),
-    createData(7, 'Щур Олександр', 'saad@email.com'),
-    createData(8, 'Чебан Владислав', 'ali@email.com'),
-    createData(9, 'Тихович Михайло', 'wasif@email.com'),
-    createData(10, 'Тарица Олександр', 'wasif@email.com'),
-    createData(11, 'Сілімір Руслан', 'wasif@email.com'),
-    createData(12, 'Беженар Олександр', 'wasif@email.com'),
-    createData(13, 'Буйновський Віктор', 'wasif@email.com'),
+    createData(1, 'Мельничук Станіслав Валерійович', 'melnychuk.stanislav@chnu.edu.ua', numberOfGroup),
+    createData(2, 'Орелецький Валентин Віталійович', 'oreletskyy.valentyn@chnu.edu.ua', numberOfGroup),
+    createData(3, 'Продан Анатолій Сергійович', 'prodan.anatoliy@chnu.edu.ua', numberOfGroup),
+    createData(4, 'Роєк Анастасія Іванівна', 'roiek.anastasiia@chnu.edu.ua', numberOfGroup),
+    createData(5, 'Стрільчук Вадим Анатолійович', 'strilchuk.vadym@chnu.edu.ua', numberOfGroup),
+    createData(6, 'Романовський Михайло Олександрович', 'romanovskyy.mykhaylo@chnu.edu.ua', numberOfGroup),
+    createData(7, 'Щур Олександр Іванович', 'shchur.oleksandr@chnu.edu.ua', numberOfGroup),
+    createData(8, 'Чебан Владислав Валентинович', 'cheban.vladyslav.v@chnu.edu.ua', numberOfGroup),
+    createData(9, 'Тихович Михайло Дмитрович', 'tykhovych.mykhailo@chnu.edu.ua', numberOfGroup),
+    createData(10, 'Бурак Денис Павлович', 'burak.denys@chnu.edu.ua', numberOfGroup),
+    createData(11, 'Бурденюк Ігор Олександрович', 'burdenyuk.ihor@chnu.edu.ua', numberOfGroup),
+    createData(12, 'Гаврилюк Микола Павлович', 'havrylyuk.mykola@chnu.edu.ua', numberOfGroup),
+    createData(13, 'Головач Дмітрій Миколайович', 'holovach.dmitriy@chnu.edu.ua', numberOfGroup),
+    createData(14, 'Дем\'ян Анастасія Юріївна', 'demian.anastasiia@chnu.edu.ua', numberOfGroup),
+    createData(15, 'Думітрюк Юрій Юрійович', 'dumitryuk.yuriy@chnu.edu.ua', numberOfGroup),
+    createData(16, 'Жук Василь Васильович', 'zhuk.vasyl@chnu.edu.ua', numberOfGroup),
+    createData(17, 'Мадей Андрій Олександрович', 'madey.andriy@chnu.edu.ua', numberOfGroup),
+    createData(18, 'Мар\'янчук Олександра Олександрівна', 'marianchuk.oleksandra@chnu.edu.ua', numberOfGroup),
 ];
 
 const useStyles = makeStyles({
@@ -41,7 +55,7 @@ const useStyles = makeStyles({
         width: '100%',
     },
     container: {
-        maxHeight: 740,
+        maxHeight: 590,
     },
 });
 

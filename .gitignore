@@ -233,3 +233,4 @@ _Pvt_Extensions
 /VisitorsTracker/wwwroot/Photos/
 /VisitorsTracker.Core/bin/Debug/netcoreapp3.1/
 /.vs/VisitorsTracker/DesignTimeBuild/
+/VisitorsTracker.Core/bin/obj/netcoreapp3.1/
