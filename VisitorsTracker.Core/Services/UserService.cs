@@ -144,6 +144,7 @@ namespace VisitorsTracker.Core.Services
         {
             var user = _mapper.Map<UserDTO>(
                  _context.Users
+                .Include(u => u.Photo)
                 .Include(u => u.Role)
                 .AsNoTracking()
                 .FirstOrDefault(o => o.Email == email));
@@ -234,6 +235,6 @@ namespace VisitorsTracker.Core.Services
 
         private void DeleteImage(User user) => user.Photo = string.Empty;
 
-        private static bool IsValidImage(IFormFile file) => file != null;
+        private static bool IsValidImage(IFormFile file) => file != null && file.IsImage();
     }
 }
