@@ -9,7 +9,7 @@ export class Home extends Component {
   render () {
     return (
       <div>
-        <img src={logo} width={1320} height={720}/>
+        <img src={logo}/>
       </div>
     );
   }

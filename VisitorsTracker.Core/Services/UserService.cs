@@ -198,7 +198,8 @@ namespace VisitorsTracker.Core.Services
                 await uploadedFile.CopyToAsync(fileStream);
             }
 
-            await uploadedFile.CopyToAsync(stream);
+            Update(user);
+            await _context.SaveChangesAsync();
 
             return user.Photo;
         }

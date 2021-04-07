@@ -1,6 +1,6 @@
-.center {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    width: 25%;
-  }
+img{
+  display:block;
+  width:1323px;
+  height:753px;
+  object-fit: cover;
+}

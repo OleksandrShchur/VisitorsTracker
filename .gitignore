@@ -230,3 +230,6 @@ _Pvt_Extensions
 
 # FAKE - F# Make
 .fake/
+/VisitorsTracker/wwwroot/Photos/
+/VisitorsTracker.Core/bin/Debug/netcoreapp3.1/
+/.vs/VisitorsTracker/DesignTimeBuild/
