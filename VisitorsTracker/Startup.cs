@@ -167,8 +167,7 @@ namespace VisitorsTracker
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.XML";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
 
-                //c.IncludeXmlComments(xmlPath);
-                //c.AddFluentValidationRules();
+                c.IncludeXmlComments(xmlPath);
             });
 
             services.AddSwaggerGenNewtonsoftSupport();
@@ -196,7 +195,6 @@ namespace VisitorsTracker
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
 
-            //app.UseHttpContext();
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
