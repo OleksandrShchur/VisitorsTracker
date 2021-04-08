@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Threading.Tasks;
 using VisitorsTracker.Db.EFCore;
 using VisitorsTracker.Db.IBaseService;
 
@@ -20,7 +21,7 @@ namespace VisitorsTracker.Core.Services
 
         protected DbSet<T> Entities { get => _context.Set<T>(); }
 
-        public T Delete(T entity)
+        public async Task<T> Delete(T entity)
         {
             if (entity == null)
             {
@@ -28,10 +29,12 @@ namespace VisitorsTracker.Core.Services
             }
 
             Entities.Remove(entity);
+            await _context.SaveChangesAsync();
+
             return entity;
         }
 
-        public T Insert(T entity)
+        public async Task<T> Insert(T entity)
         {
             if (entity == null)
             {
@@ -39,10 +42,12 @@ namespace VisitorsTracker.Core.Services
             }
 
             Entities.Add(entity);
+            await _context.SaveChangesAsync();
+
             return entity;
         }
 
-        public T Update(T entity)
+        public async Task<T> Update(T entity)
         {
             if (entity == null)
             {
@@ -50,6 +55,8 @@ namespace VisitorsTracker.Core.Services
             }
 
             Entities.Update(entity);
+            await _context.SaveChangesAsync();
+
             return entity;
         }
     }

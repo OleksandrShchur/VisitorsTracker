@@ -36,6 +36,7 @@ namespace VisitorsTracker.Core.Services
             // save refresh token
             user.RefreshTokens = new List<RefreshToken> { refreshToken };
             await _userService.Update(user);
+
             return new AuthenticateResponseModel(jwtToken, refreshToken.Token);
         }
 
@@ -47,7 +48,6 @@ namespace VisitorsTracker.Core.Services
                 throw new VisitorsTrackerException("User not found");
             }
 
-            // save
             await _userService.Update(user);
         }
 

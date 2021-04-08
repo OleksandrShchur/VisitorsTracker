@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using VisitorsTracker.Core.DTOs;
-using VisitorsTracker.Db.Entities;
 
 namespace VisitorsTracker.Core.IServices
 {
@@ -24,9 +23,5 @@ namespace VisitorsTracker.Core.IServices
         IEnumerable<UserDTO> GetUsersByRole(string role);
 
         UserDTO GetUserByRefreshToken(string token);
-
-        Task<string> AddPhoto(IFormFile uploadedFile, Guid uId);
-
-        Task<string> SavePhotoInFolder(string url);
     }
 }

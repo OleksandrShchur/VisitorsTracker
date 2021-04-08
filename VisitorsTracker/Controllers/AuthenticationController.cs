@@ -20,17 +20,20 @@ namespace VisitorsTracker.Controllers
         private readonly IAuthenticationService _authService;
         private readonly IMapper _mapper;
         private readonly ITokenService _tokenService;
+        private readonly IPhotoService _photoService;
 
         public AuthenticationController(
             IUserService userSrv,
             IMapper mapper,
             IAuthenticationService authSrv,
-            ITokenService tokenService)
+            ITokenService tokenService,
+            IPhotoService photoService)
         {
             _userService = userSrv;
             _mapper = mapper;
             _authService = authSrv;
             _tokenService = tokenService;
+            _photoService = photoService;
         }
 
         /// <summary>
@@ -53,7 +56,7 @@ namespace VisitorsTracker.Controllers
                 var user = _mapper.Map<UserViewModel, UserDTO>(userView);
                 user.Email = payload.Email;
                 user.Name = payload.Name;
-                user.PhotoUrl = await _userService.SavePhotoInFolder(userView.PhotoUrl);
+                user.PhotoUrl = await _photoService.SavePhotoInFolder(userView.PhotoUrl);
                 await _userService.Create(user);
             }
 
@@ -70,7 +73,7 @@ namespace VisitorsTracker.Controllers
         {
             if (userExisting != null && userExisting?.PhotoUrl == null)
             {
-                userExisting.PhotoUrl = await _userService.SavePhotoInFolder(urlPhoto);
+                userExisting.PhotoUrl = await _photoService.SavePhotoInFolder(urlPhoto);
 
                 await _userService.Update(userExisting);
             }

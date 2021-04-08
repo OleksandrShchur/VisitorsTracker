@@ -106,6 +106,7 @@ namespace VisitorsTracker
             services.AddScoped<IAuthenticationService, AuthenticationService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IEmailService, EmailService>();
+            services.AddScoped<IPhotoService, PhotoService>();
 
             services.Configure<JwtOptionsModel>(Configuration.GetSection("JWTOptions"));
             #endregion
@@ -167,9 +168,6 @@ namespace VisitorsTracker
 
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.XML";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-
-                //c.IncludeXmlComments(xmlPath);
-                //c.AddFluentValidationRules();
             });
 
             services.AddSwaggerGenNewtonsoftSupport();
@@ -197,7 +195,6 @@ namespace VisitorsTracker
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
 
-            //app.UseHttpContext();
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();

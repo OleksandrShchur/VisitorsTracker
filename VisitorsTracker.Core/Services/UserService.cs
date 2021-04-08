@@ -12,6 +12,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using VisitorsTracker.Core.DTOs;
 using VisitorsTracker.Core.Exceptions;
+using VisitorsTracker.Core.Extensions;
 using VisitorsTracker.Core.IServices;
 using VisitorsTracker.Core.Notifications;
 using VisitorsTracker.Db.EFCore;
@@ -22,24 +23,19 @@ namespace VisitorsTracker.Core.Services
     public class UserService : BaseService<User>, IUserService
     {
         private readonly IMediator _mediator;
-        private readonly IEmailService _emailService;
-        private readonly IHttpClientFactory _clientFactory;
-        private readonly Lazy<HttpClient> _client;
         private readonly IWebHostEnvironment _appEnvironment;
+        private readonly IPhotoService _photoService;
 
         public UserService(
             AppDbContext context,
             IMapper mapper,
             IMediator mediator,
-            IEmailService emailService,
-            IHttpClientFactory clientFactory,
+            IPhotoService photoService,
             IWebHostEnvironment appEnvironment)
             : base(context, mapper)
         { 
             _mediator = mediator;
-            _emailService = emailService;
-            _clientFactory = clientFactory;
-            _client = new Lazy<HttpClient>(() => clientFactory.CreateClient());
+            _photoService = photoService;
             _appEnvironment = appEnvironment;
         }
 
@@ -54,13 +50,12 @@ namespace VisitorsTracker.Core.Services
 
             user.Role = _context.Roles.FirstOrDefault(r => r.Name == "User");
 
-            var result = Insert(user);
+            var result =  await Insert(user);
             if (result.Email != user.Email || result.Id == Guid.Empty)
             {
                 throw new VisitorsTrackerException("Registration failed");
             }
 
-            await _context.SaveChangesAsync();
             userDto.Id = result.Id;
             await _mediator.Publish(new UserProfileCreatedMessage(userDto));
         }
@@ -79,10 +74,8 @@ namespace VisitorsTracker.Core.Services
 
             var result = _mapper.Map<UserDTO, User>(userDTO);
 
-            Update(result);
+            await Update(result);
             _context.Entry(result).State = EntityState.Detached;
-
-            await _context.SaveChangesAsync();
         }
 
         public async Task ChangeRole(Guid uId, Guid rId)
@@ -100,7 +93,7 @@ namespace VisitorsTracker.Core.Services
             }
 
             user.Role = newRole;
-            await _context.SaveChangesAsync();
+            await Update(user);
         }
 
         public async Task ChangeAvatar(Guid userId, IFormFile avatar)
@@ -116,12 +109,12 @@ namespace VisitorsTracker.Core.Services
 
             if (user.Photo != null)
             {
-               DeleteImage(user);
+                await _photoService.DeleteImage(user.Id);
             }
 
             try
             {
-                user.Photo = await AddPhoto(avatar, user.Id);
+                user.Photo = await _photoService.AddPhoto(avatar, user.Id);
             }
             catch (ArgumentException)
             {
@@ -133,7 +126,6 @@ namespace VisitorsTracker.Core.Services
         {
             var user = _mapper.Map<UserDTO>(
                 _context.Users
-                .Include(u => u.Photo)
                 .Include(u => u.Role)
                 .FirstOrDefault(x => x.Id == id));
 
@@ -144,7 +136,6 @@ namespace VisitorsTracker.Core.Services
         {
             var user = _mapper.Map<UserDTO>(
                  _context.Users
-                .Include(u => u.Photo)
                 .Include(u => u.Role)
                 .AsNoTracking()
                 .FirstOrDefault(o => o.Email == email));
@@ -173,68 +164,5 @@ namespace VisitorsTracker.Core.Services
 
             return _mapper.Map<UserDTO>(user);
         }
-
-        public async Task<string> AddPhoto(IFormFile uploadedFile, Guid uId)
-        {
-            if (!IsValidImage(uploadedFile))
-            {
-                throw new ArgumentException();
-            }
-
-            var user = _context.Users
-                .Include(u => u.Photo)
-                .FirstOrDefault(u => u.Id == uId);
-
-            if (user == null)
-            {
-                throw new VisitorsTrackerException("User is equal null");
-            }
-            
-            user.Photo = $"/Photos/{Guid.NewGuid()}_{uploadedFile.FileName}";
-
-            // save file in Img folder in wwwroot directory
-            using (var fileStream = new FileStream($"{_appEnvironment.WebRootPath}{user.Photo}",
-                FileMode.Create))
-            {
-                await uploadedFile.CopyToAsync(fileStream);
-            }
-
-            Update(user);
-            await _context.SaveChangesAsync();
-
-            return user.Photo;
-        }
-
-        public async Task<string> SavePhotoInFolder(string url)
-        {
-            if (!IsImageUrl(url))
-            {
-                throw new ArgumentException();
-            }
-
-            string photoPath = $"/Photos/{Guid.NewGuid()}.jpeg";
-
-            using (var request = new HttpRequestMessage(HttpMethod.Get, url))
-            using (
-                Stream contentStream = await (await _client.Value.SendAsync(request)).Content.ReadAsStreamAsync(),
-                stream = new FileStream($"{_appEnvironment.WebRootPath}{photoPath}", FileMode.Create))
-            {
-                
-                await contentStream.CopyToAsync(stream);
-            }
-
-            return photoPath;
-        }
-
-        private bool IsImageUrl(string url)
-        {
-            string pattern = @"^http(s) ?://([\w-]+.)+[\w-]+(/[\w- ./?%&=])?$";
-
-            return Regex.IsMatch(url, pattern, RegexOptions.None);
-        }
-
-        private void DeleteImage(User user) => user.Photo = string.Empty;
-
-        private static bool IsValidImage(IFormFile file) => file != null && file.IsImage();
     }
 }

@@ -76,7 +76,7 @@ namespace VisitorsTracker.Controllers
         /// <response code="200">Changing is succesful.</response>
         /// <response code="400">Changing process failed.</response>
         [HttpPost("[action]")]
-        public async Task<IActionResult> ChangeAvatar() // to do
+        public async Task<IActionResult> ChangeAvatar()
         {
             var user = GetCurrentUser(HttpContext.User);
             if (user == null)
