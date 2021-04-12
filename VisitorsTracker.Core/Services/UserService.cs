@@ -1,18 +1,13 @@
 ﻿using AutoMapper;
 using MediatR;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Net.Http;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using VisitorsTracker.Core.DTOs;
 using VisitorsTracker.Core.Exceptions;
-using VisitorsTracker.Core.Extensions;
 using VisitorsTracker.Core.IServices;
 using VisitorsTracker.Core.Notifications;
 using VisitorsTracker.Db.EFCore;
@@ -23,20 +18,17 @@ namespace VisitorsTracker.Core.Services
     public class UserService : BaseService<User>, IUserService
     {
         private readonly IMediator _mediator;
-        private readonly IWebHostEnvironment _appEnvironment;
         private readonly IPhotoService _photoService;
 
         public UserService(
             AppDbContext context,
             IMapper mapper,
             IMediator mediator,
-            IPhotoService photoService,
-            IWebHostEnvironment appEnvironment)
+            IPhotoService photoService)
             : base(context, mapper)
         { 
             _mediator = mediator;
             _photoService = photoService;
-            _appEnvironment = appEnvironment;
         }
 
         public async Task Create(UserDTO userDto)
@@ -109,17 +101,19 @@ namespace VisitorsTracker.Core.Services
 
             if (user.Photo != null)
             {
-                await _photoService.DeleteImage(user.Id);
+                user.Photo = await _photoService.DeleteImage(user);
             }
 
             try
             {
-                user.Photo = await _photoService.AddPhoto(avatar, user.Id);
+                user.Photo = await _photoService.AddPhoto(avatar, user);
             }
             catch (ArgumentException)
             {
                 throw new VisitorsTrackerException("Bad image file");
             }
+
+            await Update(user);
         }
 
         public UserDTO GetById(Guid id)
