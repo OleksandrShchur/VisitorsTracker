@@ -101,12 +101,12 @@ namespace VisitorsTracker.Core.Services
 
             if (user.Photo != null)
             {
-                user.Photo = await _photoService.DeleteImage(user);
+                await _photoService.DeleteImage(user);
             }
 
             try
             {
-                user.Photo = await _photoService.AddPhoto(avatar, user);
+                user.Photo = await _photoService.AddImage(avatar, user);
             }
             catch (ArgumentException)
             {

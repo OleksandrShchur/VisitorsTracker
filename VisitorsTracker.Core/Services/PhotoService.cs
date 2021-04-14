@@ -18,7 +18,7 @@ namespace VisitorsTracker.Core.Services
         private readonly Lazy<HttpClient> _client;
         private readonly IWebHostEnvironment _appEnvironment;
 
-        private static string validImagePattern = @"^http(s) ?://([\w-]+.)+[\w-]+(/[\w- ./?%&=])?$";
+        private const string validImagePattern = @"^http(s) ?://([\w-]+.)+[\w-]+(/[\w- ./?%&=])?$";
 
         public PhotoService(
             IHttpClientFactory clientFactory,
@@ -29,7 +29,7 @@ namespace VisitorsTracker.Core.Services
             _appEnvironment = appEnvironment;
         }
 
-        public async Task<string> AddPhoto(IFormFile uploadedFile, User user)
+        public async Task<string> AddImage(IFormFile uploadedFile, User user)
         {
             if (!IsValidImage(uploadedFile))
             {
@@ -53,7 +53,7 @@ namespace VisitorsTracker.Core.Services
             return user.Photo;
         }
 
-        public async Task<string> SavePhotoInFolder(string url)
+        public async Task<string> SaveImageInFolder(string url)
         {
             if (!IsImageUrl(url))
             {
@@ -74,7 +74,7 @@ namespace VisitorsTracker.Core.Services
             return photoPath;
         }
 
-        public Task<string> DeleteImage(User user)
+        public Task DeleteImage(User user)
         {
             if (user == null)
             {
@@ -87,8 +87,6 @@ namespace VisitorsTracker.Core.Services
             {
                 File.Delete(path);
             }
-
-            return null;
         }
 
         private bool IsImageUrl(string url) =>

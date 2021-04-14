@@ -56,13 +56,13 @@ namespace VisitorsTracker.Controllers
                 var user = _mapper.Map<UserViewModel, UserDTO>(userView);
                 user.Email = payload.Email;
                 user.Name = payload.Name;
-                user.PhotoUrl = await _photoService.SavePhotoInFolder(userView.PhotoUrl);
+                user.PhotoUrl = await _photoService.SaveImageInFolder(userView.PhotoUrl);
                 await _userService.Create(user);
             }
 
             await SetUserPhotoIfEmpty(userExisting, userView.PhotoUrl);
             var authResponseModel = await _authService.AuthenticateUserFromExternalProvider(payload.Email);
-            var userInfo = _mapper.Map<UserInfoViewModel>(_userService.GetByEmail(payload.Email));
+            var userInfo = _mapper.Map<UserInfoViewModel>user;
             userInfo.Token = authResponseModel.JwtToken;
             _tokenService.SetTokenCookie(authResponseModel.RefreshToken);
 
@@ -73,7 +73,7 @@ namespace VisitorsTracker.Controllers
         {
             if (userExisting != null && userExisting?.PhotoUrl == null)
             {
-                userExisting.PhotoUrl = await _photoService.SavePhotoInFolder(urlPhoto);
+                userExisting.PhotoUrl = await _photoService.SaveImageInFolder(urlPhoto);
 
                 await _userService.Update(userExisting);
             }
